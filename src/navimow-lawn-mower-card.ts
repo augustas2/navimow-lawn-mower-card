@@ -10,7 +10,7 @@ import { customElement, property, state } from "lit/decorators.js";
 import { styleMap } from "lit/directives/style-map.js";
 import type { HassEntity, HomeAssistant, LovelaceCardConfig } from "./types";
 
-const CARD_VERSION = "0.1.0";
+const CARD_VERSION = "0.2.0";
 const CARD_TYPE = "navimow-lawn-mower-card";
 
 const enum LawnMowerFeature {
@@ -34,9 +34,38 @@ const stateLabelLt: Record<string, string> = {
   idle: "Laukia",
 };
 
+const visualStateColors: Record<VisualState, string> = {
+  mowing: "var(--state-lawn_mower-mowing-color, var(--success-color, #43a047))",
+  returning: "var(--state-lawn_mower-returning-color, var(--info-color, #039be5))",
+  paused: "var(--state-lawn_mower-paused-color, var(--warning-color, #f9a825))",
+  error: "var(--error-color, #db4437)",
+  docked: "var(--state-inactive-color, #6f7287)",
+  idle: "var(--state-inactive-color, #6f7287)",
+};
+
+const actionIcons: Record<CardAction, string> = {
+  start_mowing: "M8 5v14l11-7z",
+  pause: "M6 5h4v14H6zm8 0h4v14h-4z",
+  dock: "M19 7v4h-7.17l2.88-2.88L13.29 6.7 8 12l5.29 5.3 1.42-1.42L11.83 13H21V7zM5 5h7V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h7v-2H5z",
+};
+
+const actionLabels: Record<CardAction, string> = {
+  start_mowing: "Pradėti",
+  pause: "Pauzė",
+  dock: "Į stotelę",
+};
+
+const disabledByAction: Record<CardAction, (visualState: VisualState) => boolean> = {
+  start_mowing: (visualState) => visualState === "mowing" || visualState === "returning",
+  pause: (visualState) => visualState !== "mowing" && visualState !== "returning",
+  dock: (visualState) => visualState === "docked" || visualState === "returning",
+};
+
 const computeVisualState = (stateObj: HassEntity | undefined): VisualState => {
-  if (!stateObj || stateObj.state === "unavailable" || stateObj.state === "unknown")
+  if (!stateObj || stateObj.state === "unavailable" || stateObj.state === "unknown") {
     return "idle";
+  }
+
   if (stateObj.state === "error") return "error";
   if (stateObj.state === "mowing") return "mowing";
   if (stateObj.state === "returning") return "returning";
@@ -85,44 +114,23 @@ const formatRelativeTime = (dateIso: string | undefined): string => {
   return "prieš " + String(days) + " d.";
 };
 
-const actionIcons: Record<CardAction, string> = {
-  start_mowing: "M8 5v14l11-7z",
-  pause: "M6 5h4v14H6zm8 0h4v14h-4z",
-  dock: "M19 7v4h-7.17l2.88-2.88L13.29 6.7 8 12l5.29 5.3 1.42-1.42L11.83 13H21V7zM5 5h7V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h7v-2H5z",
-};
-
-const actionLabels: Record<CardAction, string> = {
-  start_mowing: "Pradėti",
-  pause: "Pauzė",
-  dock: "Į stotelę",
-};
-
 const iconForAction = (action: CardAction): string => actionIcons[action];
 
 const actionLabel = (action: CardAction): string => actionLabels[action];
 
 const actionDisabled = (action: CardAction, visualState: VisualState): boolean => {
   if (visualState === "idle") return true;
-
-  switch (action) {
-    case "start_mowing":
-      return visualState === "mowing" || visualState === "returning";
-    case "pause":
-      return visualState !== "mowing" && visualState !== "returning";
-    case "dock":
-      return visualState === "docked" || visualState === "returning";
-  }
+  return disabledByAction[action](visualState);
 };
 
 const openMoreInfo = (element: HTMLElement, entityId: string): void => {
-  const event = new Event("hass-more-info", {
-    bubbles: true,
-    composed: true,
-  }) as Event & {
-    detail?: { entityId: string };
-  };
-  event.detail = { entityId };
-  element.dispatchEvent(event);
+  element.dispatchEvent(
+    new CustomEvent("hass-more-info", {
+      bubbles: true,
+      composed: true,
+      detail: { entityId },
+    }),
+  );
 };
 
 @customElement(CARD_TYPE)
@@ -152,19 +160,7 @@ export class NavimowLawnMowerCard extends LitElement {
   }
 
   public getCardSize(): number {
-    return 5;
-  }
-
-  public getGridOptions(): {
-    rows: number;
-    columns: number;
-    min_rows: number;
-    min_columns: number;
-  } {
-    return {
-      columns: 12,
-      min_columns: 6,
-    };
+    return 3;
   }
 
   public static getStubConfig(): Partial<LovelaceCardConfig> {
@@ -196,7 +192,7 @@ export class NavimowLawnMowerCard extends LitElement {
           show_name: "Rodyti pavadinimą",
           color: "Akcento spalva, pvz. var(--primary-color)",
         };
-        return labels[schema.name];
+        return labels[schema.name] ?? schema.name;
       },
     };
   }
@@ -271,19 +267,7 @@ export class NavimowLawnMowerCard extends LitElement {
   }
 
   private computeStateColor(visualState: VisualState): string {
-    switch (visualState) {
-      case "mowing":
-        return "var(--state-lawn_mower-mowing-color, var(--success-color, #43a047))";
-      case "returning":
-        return "var(--state-lawn_mower-returning-color, var(--info-color, #039be5))";
-      case "paused":
-        return "var(--state-lawn_mower-paused-color, var(--warning-color, #f9a825))";
-      case "error":
-        return "var(--error-color, #db4437)";
-      case "docked":
-      case "idle":
-        return "var(--state-inactive-color, #6f7287)";
-    }
+    return visualStateColors[visualState];
   }
 
   private renderMetricLine(
@@ -297,6 +281,7 @@ export class NavimowLawnMowerCard extends LitElement {
         : typeof status === "string"
           ? status
           : undefined;
+
     return value ? html`<div class="metric">${value}</div>` : nothing;
   }
 
@@ -321,7 +306,9 @@ export class NavimowLawnMowerCard extends LitElement {
             title=${actionLabel(action)}
             aria-label=${actionLabel(action)}
             ?disabled=${actionDisabled(action, visualState)}
-            @click=${(event: Event) => this.callLawnMowerService(event, action, entityId)}
+            @click=${(event: Event) => {
+              void this.callLawnMowerService(event, action, entityId);
+            }}
           >
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d=${iconForAction(action)}></path>
@@ -344,342 +331,286 @@ export class NavimowLawnMowerCard extends LitElement {
   private renderMowerSvg(visualState: VisualState): TemplateResult {
     return html`
       <div class="svg-wrap ${visualState}">
-        <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" class="mower-svg">
-          <circle
-            cx="120"
-            cy="120"
-            r="110"
-            class="glow"
+        <svg
+          viewBox="0 0 260 260"
+          xmlns="http://www.w3.org/2000/svg"
+          class="mower-svg navimow-svg"
+          aria-hidden="true"
+        >
+          <defs>
+            <linearGradient id="shellGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#c8ccd3" />
+              <stop offset="55%" stop-color="#aeb3bc" />
+              <stop offset="100%" stop-color="#8f949d" />
+            </linearGradient>
+
+            <linearGradient id="darkPanelGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#34373d" />
+              <stop offset="100%" stop-color="#17191d" />
+            </linearGradient>
+
+            <linearGradient id="bumperGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#5b6069" />
+              <stop offset="100%" stop-color="#30343a" />
+            </linearGradient>
+
+            <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+              <feDropShadow dx="0" dy="5" stdDeviation="5" flood-opacity="0.22" />
+            </filter>
+          </defs>
+
+          <ellipse
+            class="status-glow"
+            cx="130"
+            cy="138"
+            rx="108"
+            ry="105"
             fill="var(--mower-color)"
-            opacity="0.06"
+            opacity="0.08"
           />
 
-          <g class="dock-indicator">
+          <g class="wheel wheel-left">
+            <rect x="20" y="93" width="34" height="94" rx="15" fill="#23262b" />
+            <path
+              class="wheel-tread"
+              d="M45 101 v78"
+              stroke="#555b63"
+              stroke-width="15"
+              stroke-linecap="round"
+              stroke-dasharray="7 8"
+            />
+            <path
+              d="M27 104 h8 M27 139 h8 M27 174 h8"
+              stroke="#ff5a1f"
+              stroke-width="6"
+              stroke-linecap="round"
+            />
+          </g>
+
+          <g class="wheel wheel-right">
+            <rect x="206" y="93" width="34" height="94" rx="15" fill="#23262b" />
+            <path
+              class="wheel-tread"
+              d="M215 101 v78"
+              stroke="#555b63"
+              stroke-width="15"
+              stroke-linecap="round"
+              stroke-dasharray="7 8"
+            />
+            <path
+              d="M225 104 h8 M225 139 h8 M225 174 h8"
+              stroke="#ff5a1f"
+              stroke-width="6"
+              stroke-linecap="round"
+            />
+          </g>
+
+          <path
+            d="M39 105 C43 42 217 42 221 105 L234 184 C238 214 211 234 174 238 H86 C49 234 22 214 26 184 Z"
+            fill="#15171a"
+            opacity="0.18"
+          />
+
+          <g class="mower-body" filter="url(#softShadow)">
+            <path
+              class="outer-shell"
+              d="M40 101 C45 39 215 39 220 101 L232 180 C237 213 210 231 174 234 H86 C50 231 23 213 28 180 Z"
+              fill="url(#shellGradient)"
+              stroke="#2f333a"
+              stroke-width="2"
+            />
+
+            <path
+              class="top-panel"
+              d="M68 83 C78 45 182 45 192 83 L198 157 C199 178 179 190 155 192 H105 C81 190 61 178 62 157 Z"
+              fill="url(#darkPanelGradient)"
+              stroke="#101216"
+              stroke-width="2"
+            />
+
+            <path
+              d="M84 92 C91 66 169 66 176 92 L181 155 C182 169 168 177 151 178 H109 C92 177 78 169 79 155 Z"
+              fill="none"
+              stroke="#4b5057"
+              stroke-width="1.2"
+              opacity="0.8"
+            />
+
+            <path
+              class="front-bumper"
+              d="M31 176 C52 202 208 202 229 176 L233 192 C237 215 209 231 174 234 H86 C51 231 23 215 27 192 Z"
+              fill="url(#bumperGradient)"
+              stroke="#252930"
+              stroke-width="2"
+            />
+
             <rect
-              x="80"
-              y="188"
-              width="80"
-              height="24"
-              rx="7"
-              fill="var(--card-background-color, #fff)"
-              stroke="var(--mower-color)"
+              x="106"
+              y="185"
+              width="48"
+              height="22"
+              rx="8"
+              fill="#2b2f35"
+              stroke="#797f89"
               stroke-width="2"
             />
-          </g>
+            <rect x="114" y="189" width="32" height="14" rx="5" fill="#08090b" />
+            <circle cx="121" cy="196" r="7" fill="#16191f" opacity="0.8" />
 
-          <g class="return-path">
-            <polygon
-              points="120,220 110,208 130,208"
-              fill="var(--mower-color)"
-              stroke="var(--mower-color)"
-              stroke-width="2"
-              stroke-linejoin="round"
-              opacity="0.55"
+            <rect
+              class="orange-accent"
+              x="51"
+              y="217"
+              width="36"
+              height="8"
+              rx="4"
+              fill="#ff5a1f"
+              transform="rotate(8 69 221)"
             />
-          </g>
+            <rect
+              class="orange-accent"
+              x="173"
+              y="217"
+              width="36"
+              height="8"
+              rx="4"
+              fill="#ff5a1f"
+              transform="rotate(-8 191 221)"
+            />
 
-          <g class="mower-body-rotate">
-            <g class="mower-body">
-              <g class="blade-disc">
-                <circle
-                  cx="120"
-                  cy="130"
-                  r="46"
-                  fill="none"
-                  stroke="var(--mower-color)"
-                  stroke-width="1.5"
-                  stroke-dasharray="8 6"
-                />
-                <circle cx="120" cy="130" r="6" fill="var(--mower-color)" />
-                <line
-                  x1="120"
-                  y1="130"
-                  x2="120"
-                  y2="88"
-                  stroke="var(--mower-color)"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                />
-                <line
-                  x1="120"
-                  y1="130"
-                  x2="156"
-                  y2="151"
-                  stroke="var(--mower-color)"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                />
-                <line
-                  x1="120"
-                  y1="130"
-                  x2="84"
-                  y2="151"
-                  stroke="var(--mower-color)"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                />
-              </g>
-
-              <g class="wheel wheel-left">
-                <rect
-                  x="50"
-                  y="144"
-                  width="12"
-                  height="40"
-                  rx="5"
-                  fill="var(--card-background-color, #fff)"
-                  stroke="var(--mower-color)"
-                  stroke-width="1.5"
-                  opacity="0.7"
-                />
-                <line
-                  class="tread"
-                  x1="56"
-                  y1="148"
-                  x2="56"
-                  y2="180"
-                  stroke="var(--mower-color)"
-                  stroke-width="6"
-                  stroke-dasharray="3 3"
-                  stroke-linecap="butt"
-                  opacity="0.12"
-                />
-              </g>
-              <g class="wheel wheel-right">
-                <rect
-                  x="178"
-                  y="144"
-                  width="12"
-                  height="40"
-                  rx="5"
-                  fill="var(--card-background-color, #fff)"
-                  stroke="var(--mower-color)"
-                  stroke-width="1.5"
-                  opacity="0.7"
-                />
-                <line
-                  class="tread"
-                  x1="184"
-                  y1="148"
-                  x2="184"
-                  y2="180"
-                  stroke="var(--mower-color)"
-                  stroke-width="6"
-                  stroke-dasharray="3 3"
-                  stroke-linecap="butt"
-                  opacity="0.12"
-                />
-              </g>
-
-              <path
-                d="M 64,98 C 64,50 176,50 176,98 L 176,168 C 176,180 168,186 158,186 L 82,186 C 72,186 64,180 64,168 Z"
-                fill="var(--card-background-color, #fff)"
-                stroke="var(--mower-color)"
+            <g opacity="0.3">
+              <line
+                x1="111"
+                y1="219"
+                x2="111"
+                y2="234"
+                stroke="#1a1d21"
                 stroke-width="2"
-                class="body-shell"
               />
-
-              <path
-                d="M 74,102 C 74,60 166,60 166,102 L 166,162 C 166,172 160,176 152,176 L 88,176 C 80,176 74,172 74,162 Z"
-                fill="none"
-                stroke="var(--mower-color)"
-                stroke-width="0.8"
-                opacity="0.2"
+              <line
+                x1="121"
+                y1="219"
+                x2="121"
+                y2="234"
+                stroke="#1a1d21"
+                stroke-width="2"
               />
-
-              <path
-                d="M 64,102 C 64,52 176,52 176,102"
-                fill="none"
-                stroke="var(--mower-color)"
-                stroke-width="4"
-                stroke-linecap="round"
-                class="bumper"
+              <line
+                x1="131"
+                y1="219"
+                x2="131"
+                y2="234"
+                stroke="#1a1d21"
+                stroke-width="2"
               />
-              <path
-                d="M 72,100 C 72,58 168,58 168,100"
-                fill="none"
-                stroke="var(--mower-color)"
-                stroke-width="1"
-                stroke-linecap="round"
-                opacity="0.15"
+              <line
+                x1="141"
+                y1="219"
+                x2="141"
+                y2="234"
+                stroke="#1a1d21"
+                stroke-width="2"
               />
-
-              <circle cx="92" cy="68" r="1.5" fill="var(--mower-color)" opacity="0.15" />
-              <circle cx="120" cy="60" r="1.5" fill="var(--mower-color)" opacity="0.15" />
-              <circle cx="148" cy="68" r="1.5" fill="var(--mower-color)" opacity="0.15" />
-
-              <circle
-                cx="120"
-                cy="78"
-                r="4"
-                fill="var(--mower-color)"
-                opacity="0.08"
-                class="led-ring"
+              <line
+                x1="151"
+                y1="219"
+                x2="151"
+                y2="234"
+                stroke="#1a1d21"
+                stroke-width="2"
               />
-              <circle
-                cx="120"
-                cy="78"
-                r="2.5"
-                fill="var(--mower-color)"
-                opacity="0.5"
-                class="led-dot"
-              />
-
-              <circle
-                cx="120"
-                cy="148"
-                r="8"
-                fill="var(--mower-color)"
-                opacity="0.06"
-                class="power-ring"
-              />
-              <circle
-                cx="120"
-                cy="148"
-                r="4"
-                fill="var(--mower-color)"
-                opacity="0.2"
-                class="power-dot"
-              />
-
-              <mask id="outside-body">
-                <rect width="240" height="240" fill="white" />
-                <path
-                  d="M 60,98 C 60,46 180,46 180,98 L 180,170 C 180,182 172,190 160,190 L 80,190 C 68,190 60,182 60,170 Z"
-                  fill="black"
-                />
-              </mask>
-              <g class="particles" mask="url(#outside-body)">
-                <path
-                  class="grass g1"
-                  d="M64,110 q-3,4 -1,8"
-                  fill="none"
-                  stroke="var(--mower-color)"
-                  stroke-width="1.4"
-                  stroke-linecap="round"
-                />
-                <path
-                  class="grass g2"
-                  d="M63,126 q-4,3 -2,8"
-                  fill="none"
-                  stroke="var(--mower-color)"
-                  stroke-width="1.2"
-                  stroke-linecap="round"
-                />
-                <path
-                  class="grass g3"
-                  d="M64,140 q-4,3 -2,8"
-                  fill="none"
-                  stroke="var(--mower-color)"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                />
-                <path
-                  class="grass g4"
-                  d="M64,154 q-3,4 -1,8"
-                  fill="none"
-                  stroke="var(--mower-color)"
-                  stroke-width="1.1"
-                  stroke-linecap="round"
-                />
-                <path
-                  class="grass g5"
-                  d="M66,168 q-3,3 -1,8"
-                  fill="none"
-                  stroke="var(--mower-color)"
-                  stroke-width="1.3"
-                  stroke-linecap="round"
-                />
-                <path
-                  class="grass g6"
-                  d="M176,110 q3,4 1,8"
-                  fill="none"
-                  stroke="var(--mower-color)"
-                  stroke-width="1.4"
-                  stroke-linecap="round"
-                />
-                <path
-                  class="grass g7"
-                  d="M177,126 q4,3 2,8"
-                  fill="none"
-                  stroke="var(--mower-color)"
-                  stroke-width="1.2"
-                  stroke-linecap="round"
-                />
-                <path
-                  class="grass g8"
-                  d="M176,140 q4,3 2,8"
-                  fill="none"
-                  stroke="var(--mower-color)"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                />
-                <path
-                  class="grass g9"
-                  d="M176,154 q3,4 1,8"
-                  fill="none"
-                  stroke="var(--mower-color)"
-                  stroke-width="1.1"
-                  stroke-linecap="round"
-                />
-                <path
-                  class="grass g10"
-                  d="M174,168 q3,3 1,8"
-                  fill="none"
-                  stroke="var(--mower-color)"
-                  stroke-width="1.3"
-                  stroke-linecap="round"
-                />
-                <path
-                  class="grass g11"
-                  d="M90,68 q-3,-4 -1,-8"
-                  fill="none"
-                  stroke="var(--mower-color)"
-                  stroke-width="1.3"
-                  stroke-linecap="round"
-                />
-                <path
-                  class="grass g12"
-                  d="M120,54 q1,-4 -1,-8"
-                  fill="none"
-                  stroke="var(--mower-color)"
-                  stroke-width="1.2"
-                  stroke-linecap="round"
-                />
-                <path
-                  class="grass g13"
-                  d="M150,68 q3,-4 1,-8"
-                  fill="none"
-                  stroke="var(--mower-color)"
-                  stroke-width="1.3"
-                  stroke-linecap="round"
-                />
-                <path
-                  class="grass g14"
-                  d="M92,186 q-3,4 -1,8"
-                  fill="none"
-                  stroke="var(--mower-color)"
-                  stroke-width="1.3"
-                  stroke-linecap="round"
-                />
-                <path
-                  class="grass g15"
-                  d="M120,186 q2,4 0,9"
-                  fill="none"
-                  stroke="var(--mower-color)"
-                  stroke-width="1.1"
-                  stroke-linecap="round"
-                />
-                <path
-                  class="grass g16"
-                  d="M148,186 q3,4 1,8"
-                  fill="none"
-                  stroke="var(--mower-color)"
-                  stroke-width="1.3"
-                  stroke-linecap="round"
-                />
-              </g>
             </g>
+
+            <g class="lidar">
+              <ellipse cx="130" cy="77" rx="40" ry="16" fill="#0e1014" opacity="0.65" />
+              <ellipse
+                class="lidar-blue-ring"
+                cx="130"
+                cy="77"
+                rx="37"
+                ry="13"
+                fill="none"
+                stroke="#3ba7ff"
+                stroke-width="4"
+                opacity="0.95"
+              />
+              <rect x="91" y="49" width="78" height="31" rx="14" fill="#1d2026" />
+              <ellipse
+                cx="130"
+                cy="49"
+                rx="39"
+                ry="18"
+                fill="#e4e7eb"
+                stroke="#70757f"
+                stroke-width="1.5"
+              />
+              <path d="M130 39 l7 7 h-14 z" fill="#8c929c" opacity="0.85" />
+              <rect x="121" y="63" width="18" height="15" rx="4" fill="#2f3339" />
+            </g>
+
+            <rect
+              class="stop-button"
+              x="92"
+              y="103"
+              width="76"
+              height="24"
+              rx="12"
+              fill="#ff3f18"
+              stroke="#b92a11"
+              stroke-width="2"
+            />
+
+            <rect
+              x="96"
+              y="143"
+              width="68"
+              height="25"
+              rx="6"
+              fill="#24282e"
+              stroke="#555b64"
+            />
+            <g class="leds">
+              <rect x="110" y="154" width="10" height="4" rx="2" fill="#ffffff" />
+              <rect x="125" y="154" width="10" height="4" rx="2" fill="#ffffff" />
+              <rect x="140" y="154" width="10" height="4" rx="2" fill="#ffffff" />
+            </g>
+          </g>
+
+          <g class="blade-disc">
+            <circle
+              cx="130"
+              cy="150"
+              r="42"
+              fill="none"
+              stroke="var(--mower-color)"
+              stroke-width="1.5"
+              stroke-dasharray="7 6"
+            />
+            <circle cx="130" cy="150" r="5" fill="var(--mower-color)" />
+            <line
+              x1="130"
+              y1="150"
+              x2="130"
+              y2="113"
+              stroke="var(--mower-color)"
+              stroke-width="2"
+            />
+            <line
+              x1="130"
+              y1="150"
+              x2="162"
+              y2="169"
+              stroke="var(--mower-color)"
+              stroke-width="2"
+            />
+            <line
+              x1="130"
+              y1="150"
+              x2="98"
+              y2="169"
+              stroke="var(--mower-color)"
+              stroke-width="2"
+            />
           </g>
         </svg>
       </div>
@@ -695,8 +626,6 @@ export class NavimowLawnMowerCard extends LitElement {
       --mower-text-color: var(--primary-text-color, #4f5268);
       --mower-secondary-text-color: var(--secondary-text-color, #6b6f86);
       --mower-icon-button-bg: color-mix(in srgb, var(--mower-color) 10%, transparent);
-      height: 100%;
-      min-height: 340px;
       overflow: hidden;
       border-radius: var(--ha-card-border-radius, 14px);
       background: var(--ha-card-background, var(--card-background-color, #fff));
@@ -713,8 +642,7 @@ export class NavimowLawnMowerCard extends LitElement {
       flex-direction: column;
       align-items: center;
       width: 100%;
-      min-height: 284px;
-      padding: 16px 18px 8px;
+      padding: 14px 16px 8px;
       text-align: center;
       font: inherit;
     }
@@ -747,8 +675,8 @@ export class NavimowLawnMowerCard extends LitElement {
     }
 
     .state-text {
-      margin-top: 4px;
-      font-size: clamp(30px, 7vw, 44px);
+      margin-top: 2px;
+      font-size: clamp(24px, 4vw, 34px);
       line-height: 1.05;
       font-weight: 500;
       letter-spacing: -0.03em;
@@ -756,16 +684,16 @@ export class NavimowLawnMowerCard extends LitElement {
     }
 
     .updated {
-      margin-top: 8px;
+      margin-top: 4px;
       color: var(--mower-secondary-text-color);
       font-weight: 700;
-      font-size: 16px;
+      font-size: 14px;
     }
 
     .svg-wrap {
-      width: min(220px, 54vw);
-      height: min(220px, 54vw);
-      margin-top: 18px;
+      width: min(180px, 32vw);
+      height: min(180px, 32vw);
+      margin-top: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -778,16 +706,16 @@ export class NavimowLawnMowerCard extends LitElement {
     }
 
     .name {
-      margin-top: 8px;
-      font-size: 18px;
+      margin-top: 4px;
+      font-size: 15px;
       line-height: 1.2;
       font-weight: 700;
       color: var(--mower-text-color);
     }
 
     .metric {
-      margin-top: 6px;
-      font-size: 13px;
+      margin-top: 5px;
+      font-size: 12px;
       line-height: 1;
       color: var(--mower-secondary-text-color);
       opacity: 0.8;
@@ -795,9 +723,9 @@ export class NavimowLawnMowerCard extends LitElement {
 
     .actions {
       display: flex;
-      gap: 16px;
+      gap: 14px;
       align-items: center;
-      padding: 12px 22px 18px;
+      padding: 10px 18px 14px;
       border-top: 1px solid var(--divider-color, rgba(0, 0, 0, 0.08));
     }
 
@@ -807,8 +735,8 @@ export class NavimowLawnMowerCard extends LitElement {
       border-radius: 14px;
       background: var(--mower-icon-button-bg);
       color: var(--mower-color);
-      width: 52px;
-      height: 52px;
+      width: 48px;
+      height: 48px;
       display: inline-grid;
       place-items: center;
       cursor: pointer;
@@ -829,382 +757,187 @@ export class NavimowLawnMowerCard extends LitElement {
     }
 
     .action-button svg {
-      width: 28px;
-      height: 28px;
+      width: 26px;
+      height: 26px;
       fill: currentColor;
     }
 
-    .dock-indicator,
-    .return-path,
-    .particles {
+    .navimow-svg .blade-disc {
       opacity: 0;
-      transition: opacity 400ms ease;
+      transform-origin: 130px 150px;
+      transition: opacity 250ms ease;
     }
 
-    .blade-disc {
-      opacity: 0;
-      transition: opacity 400ms ease;
+    .navimow-svg .lidar-blue-ring {
+      transform-origin: 130px 77px;
     }
 
-    .mowing .mower-body {
-      animation: mower-wander 12s ease-in-out infinite;
-      transform-origin: 120px 120px;
+    .navimow-svg .wheel-tread {
+      transition: stroke-dashoffset 200ms linear;
     }
 
-    .mowing .blade-disc {
-      opacity: 0.15;
-      animation: blade-spin 0.8s linear infinite;
-      transform-origin: 120px 130px;
+    .navimow-svg .status-glow {
+      transition: opacity 250ms ease;
     }
 
-    .mowing .particles {
-      opacity: 1;
+    .mowing .navimow-svg .mower-body {
+      animation: navimow-drive 5s ease-in-out infinite;
+      transform-origin: 130px 140px;
     }
 
-    .mowing .grass {
-      animation: grass-eject var(--g-dur, 2s) ease-out infinite;
-      animation-delay: var(--g-delay, 0s);
+    .mowing .navimow-svg .blade-disc {
+      opacity: 0.18;
+      animation: navimow-blade-spin 0.6s linear infinite;
     }
 
-    .mowing .g1 {
-      --g-x: -36px;
-      --g-y: -14px;
-      --g-rot: -25deg;
-      --g-dur: 1.8s;
-      --g-delay: 0s;
-    }
-    .mowing .g2 {
-      --g-x: -40px;
-      --g-y: 6px;
-      --g-rot: 18deg;
-      --g-dur: 2.1s;
-      --g-delay: -0.7s;
-    }
-    .mowing .g3 {
-      --g-x: -34px;
-      --g-y: 16px;
-      --g-rot: 32deg;
-      --g-dur: 1.9s;
-      --g-delay: -1.3s;
-    }
-    .mowing .g4 {
-      --g-x: -30px;
-      --g-y: 22px;
-      --g-rot: -15deg;
-      --g-dur: 2.3s;
-      --g-delay: -1.8s;
-    }
-    .mowing .g5 {
-      --g-x: 36px;
-      --g-y: -14px;
-      --g-rot: 25deg;
-      --g-dur: 1.8s;
-      --g-delay: -0.3s;
-    }
-    .mowing .g6 {
-      --g-x: 40px;
-      --g-y: 6px;
-      --g-rot: -18deg;
-      --g-dur: 2.1s;
-      --g-delay: -1s;
-    }
-    .mowing .g7 {
-      --g-x: 34px;
-      --g-y: 16px;
-      --g-rot: -32deg;
-      --g-dur: 1.9s;
-      --g-delay: -1.6s;
-    }
-    .mowing .g8 {
-      --g-x: 30px;
-      --g-y: 22px;
-      --g-rot: 15deg;
-      --g-dur: 2.3s;
-      --g-delay: -0.5s;
-    }
-    .mowing .g9 {
-      --g-x: -28px;
-      --g-y: -30px;
-      --g-rot: -40deg;
-      --g-dur: 2s;
-      --g-delay: -0.4s;
-    }
-    .mowing .g10 {
-      --g-x: -12px;
-      --g-y: -34px;
-      --g-rot: -20deg;
-      --g-dur: 1.8s;
-      --g-delay: -1.1s;
-    }
-    .mowing .g11 {
-      --g-x: 3px;
-      --g-y: -36px;
-      --g-rot: 8deg;
-      --g-dur: 1.7s;
-      --g-delay: -1.7s;
-    }
-    .mowing .g12 {
-      --g-x: 14px;
-      --g-y: -34px;
-      --g-rot: 20deg;
-      --g-dur: 1.8s;
-      --g-delay: -0.2s;
-    }
-    .mowing .g13 {
-      --g-x: 28px;
-      --g-y: -30px;
-      --g-rot: 40deg;
-      --g-dur: 2s;
-      --g-delay: -0.9s;
-    }
-    .mowing .g14 {
-      --g-x: -16px;
-      --g-y: 28px;
-      --g-rot: 22deg;
-      --g-dur: 2.2s;
-      --g-delay: -0.8s;
-    }
-    .mowing .g15 {
-      --g-x: 5px;
-      --g-y: 30px;
-      --g-rot: -8deg;
-      --g-dur: 1.6s;
-      --g-delay: -1.5s;
-    }
-    .mowing .g16 {
-      --g-x: 16px;
-      --g-y: 28px;
-      --g-rot: -22deg;
-      --g-dur: 2.2s;
-      --g-delay: -0.4s;
+    .mowing .navimow-svg .wheel-tread {
+      animation: navimow-tread 0.45s linear infinite;
     }
 
-    .mowing .tread {
-      animation: tread-scroll 0.4s linear infinite;
+    .mowing .navimow-svg .lidar-blue-ring {
+      animation: navimow-lidar-pulse 1.7s ease-in-out infinite;
     }
 
-    .mowing .led-dot {
-      animation: led-pulse 2s ease-in-out infinite;
+    .mowing .navimow-svg .leds {
+      animation: navimow-led-pulse 1.2s ease-in-out infinite;
     }
 
-    .mower-body-rotate {
-      transform-origin: 120px 120px;
-      transform: rotate(0deg);
-      transition: transform 600ms ease-in-out;
+    .returning .navimow-svg .mower-body {
+      animation: navimow-return 2.4s ease-in-out infinite;
+      transform-origin: 130px 140px;
     }
 
-    .returning .mower-body-rotate {
-      transform: rotate(180deg);
+    .returning .navimow-svg .wheel-tread {
+      animation: navimow-tread 0.65s linear infinite;
     }
 
-    .returning .mower-body {
-      animation: returning-drift 3s ease-in-out infinite;
+    .returning .navimow-svg .lidar-blue-ring {
+      animation: navimow-lidar-pulse 1.2s ease-in-out infinite;
     }
 
-    .returning .return-path {
-      opacity: 1;
-      animation: return-arrow 1.6s ease-in-out infinite;
-      transform-origin: 120px 210px;
+    .docked .navimow-svg .status-glow {
+      animation: navimow-docked-glow 3s ease-in-out infinite;
     }
 
-    .returning .blade-disc {
-      opacity: 0.06;
+    .docked .navimow-svg .lidar-blue-ring,
+    .docked .navimow-svg .leds {
+      animation: navimow-charge-pulse 2.4s ease-in-out infinite;
     }
 
-    .returning .tread {
-      animation: tread-scroll-reverse 0.6s linear infinite;
+    .paused .navimow-svg .mower-body {
+      opacity: 0.78;
     }
 
-    .docked .dock-indicator {
-      opacity: 1;
+    .error .navimow-svg .status-glow,
+    .error .navimow-svg .orange-accent,
+    .error .navimow-svg .stop-button {
+      animation: navimow-error-pulse 0.9s ease-in-out infinite;
     }
 
-    .docked .mower-body {
-      opacity: 0.75;
-    }
-
-    .docked .glow {
-      animation: docked-glow 4s ease-in-out infinite;
-    }
-
-    .docked .power-ring,
-    .docked .led-dot {
-      animation: charge-pulse 2.5s ease-in-out infinite;
-    }
-
-    .paused .mower-body,
-    .idle .mower-body {
-      opacity: 0.7;
-    }
-
-    .paused .blade-disc {
-      opacity: 0.04;
-    }
-
-    .error .glow {
-      animation: error-glow 1.8s ease-in-out infinite;
-    }
-
-    .error .led-dot {
-      animation: error-led 0.8s ease-in-out infinite;
-    }
-
-    @keyframes mower-wander {
-      0% {
-        transform: rotate(0deg) translate(0, 0);
-      }
-      15% {
-        transform: rotate(0deg) translate(0, -30px);
+    @keyframes navimow-drive {
+      0%,
+      100% {
+        transform: translateY(0) rotate(0deg);
       }
       25% {
-        transform: rotate(0deg) translate(0, 0);
+        transform: translateY(-5px) rotate(-1deg);
       }
-      32% {
-        transform: rotate(-18deg) translate(0, 0);
+      50% {
+        transform: translateY(1px) rotate(0deg);
       }
-      47% {
-        transform: rotate(-18deg) translate(0, -28px);
-      }
-      57% {
-        transform: rotate(-18deg) translate(0, 0);
-      }
-      63% {
-        transform: rotate(12deg) translate(0, 0);
-      }
-      78% {
-        transform: rotate(12deg) translate(0, -25px);
-      }
-      88% {
-        transform: rotate(12deg) translate(0, 0);
-      }
-      95%,
-      100% {
-        transform: rotate(0deg) translate(0, 0);
+      75% {
+        transform: translateY(-4px) rotate(1deg);
       }
     }
 
-    @keyframes blade-spin {
+    @keyframes navimow-return {
+      0%,
+      100% {
+        transform: translateY(0) rotate(180deg);
+      }
+      50% {
+        transform: translateY(6px) rotate(180deg);
+      }
+    }
+
+    @keyframes navimow-blade-spin {
       to {
         transform: rotate(360deg);
       }
     }
-    @keyframes tread-scroll {
+
+    @keyframes navimow-tread {
       to {
-        stroke-dashoffset: -6;
-      }
-    }
-    @keyframes tread-scroll-reverse {
-      to {
-        stroke-dashoffset: 6;
+        stroke-dashoffset: -15;
       }
     }
 
-    @keyframes grass-eject {
-      0% {
-        opacity: 0;
-        transform: translate(0, 0) rotate(0deg) scale(0.7);
-      }
-      12% {
-        opacity: 0.65;
-        transform: translate(calc(var(--g-x) * 0.12), calc(var(--g-y) * 0.12))
-          rotate(calc(var(--g-rot) * 0.1)) scale(1);
-      }
-      55% {
-        opacity: 0.35;
-        transform: translate(calc(var(--g-x) * 0.7), calc(var(--g-y) * 0.7))
-          rotate(calc(var(--g-rot) * 0.7)) scale(0.8);
-      }
+    @keyframes navimow-lidar-pulse {
+      0%,
       100% {
-        opacity: 0;
-        transform: translate(var(--g-x), var(--g-y)) rotate(var(--g-rot)) scale(0.4);
+        opacity: 0.55;
+      }
+      50% {
+        opacity: 1;
       }
     }
 
-    @keyframes led-pulse {
+    @keyframes navimow-led-pulse {
       0%,
       100% {
-        opacity: 0.3;
+        opacity: 0.45;
       }
       50% {
-        opacity: 0.8;
+        opacity: 1;
       }
     }
-    @keyframes returning-drift {
-      0%,
-      100% {
-        transform: translateY(-6px);
-      }
-      50% {
-        transform: translateY(4px);
-      }
-    }
-    @keyframes return-arrow {
-      0%,
-      100% {
-        transform: translateY(-6px);
-        opacity: 0.3;
-      }
-      50% {
-        transform: translateY(4px);
-        opacity: 0.85;
-      }
-    }
-    @keyframes docked-glow {
+
+    @keyframes navimow-docked-glow {
       0%,
       100% {
         opacity: 0.06;
       }
       50% {
-        opacity: 0.14;
+        opacity: 0.16;
       }
     }
-    @keyframes charge-pulse {
+
+    @keyframes navimow-charge-pulse {
       0%,
       100% {
-        opacity: 0.08;
-      }
-      50% {
-        opacity: 0.25;
-      }
-    }
-    @keyframes error-glow {
-      0%,
-      100% {
-        opacity: 0.08;
-      }
-      50% {
         opacity: 0.35;
       }
+      50% {
+        opacity: 1;
+      }
     }
-    @keyframes error-led {
+
+    @keyframes navimow-error-pulse {
       0%,
       100% {
-        opacity: 0.2;
+        opacity: 0.35;
       }
       50% {
-        opacity: 0.9;
+        opacity: 1;
       }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .mowing .mower-body,
-      .mowing .blade-disc,
-      .mowing .grass,
-      .mowing .tread,
-      .mowing .led-dot,
-      .returning .mower-body,
-      .returning .return-path,
-      .returning .tread,
-      .docked .glow,
-      .docked .power-ring,
-      .docked .led-dot,
-      .error .glow,
-      .error .led-dot {
+      .mowing .navimow-svg .mower-body,
+      .mowing .navimow-svg .blade-disc,
+      .mowing .navimow-svg .wheel-tread,
+      .mowing .navimow-svg .lidar-blue-ring,
+      .mowing .navimow-svg .leds,
+      .returning .navimow-svg .mower-body,
+      .returning .navimow-svg .wheel-tread,
+      .returning .navimow-svg .lidar-blue-ring,
+      .docked .navimow-svg .status-glow,
+      .docked .navimow-svg .lidar-blue-ring,
+      .docked .navimow-svg .leds,
+      .error .navimow-svg .status-glow,
+      .error .navimow-svg .orange-accent,
+      .error .navimow-svg .stop-button {
         animation: none;
-      }
-
-      .mower-body-rotate {
-        transition: none;
       }
     }
   `;
@@ -1216,10 +949,10 @@ window.customCards.push({
   name: "Navimow Lawn Mower Card",
   preview: true,
   description:
-    "Kortelė lawn_mower entity su baterija, būsenos tekstu, SVG animacija ir komandomis.",
+    "Kortelė lawn_mower entity su baterija, būsenos tekstu, Navimow stiliaus SVG animacija ir komandomis.",
   documentationURL:
     "https://developers.home-assistant.io/docs/frontend/custom-ui/custom-card/",
-  getEntitySuggestion: (_hass, entityId) => {
+  getEntitySuggestion: (_hass: HomeAssistant, entityId: string) => {
     if (!entityId.startsWith("lawn_mower.")) return null;
     return { config: { type: "custom:" + CARD_TYPE, entity: entityId } };
   },
@@ -1233,5 +966,19 @@ console.info(
 declare global {
   interface HTMLElementTagNameMap {
     [CARD_TYPE]: NavimowLawnMowerCard;
+  }
+
+  interface Window {
+    customCards?: {
+      type: string;
+      name: string;
+      preview?: boolean;
+      description?: string;
+      documentationURL?: string;
+      getEntitySuggestion?: (
+        hass: HomeAssistant,
+        entityId: string,
+      ) => { config: Record<string, string> } | null;
+    }[];
   }
 }
