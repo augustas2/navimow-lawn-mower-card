@@ -1,100 +1,61 @@
-import {
-  HassEntityAttributeBase,
-  HassEntityBase,
-} from 'home-assistant-js-websocket';
-import { TemplateResult, nothing } from 'lit';
+export type HassEntityAttributeValue =
+  string | number | boolean | null | undefined | object;
 
-export * from 'home-assistant-js-websocket';
-
-export type TemplateNothing = typeof nothing;
-export type Template = TemplateResult | TemplateNothing;
-
-export type LawnMowerEntityState =
-  | 'mowing'
-  | 'docked'
-  | 'idle'
-  | 'paused'
-  | 'returning'
-  | 'error'
-  | 'unknown'
-  | string; // for other states
-
-export type LawnMowerEntityActivity =
-  | 'standby'
-  | 'emergency'
-  | 'charging'
-  | 'charging_with_task_suspend'
-  | 'park'
-  | LawnMowerEntityState
-  | string; // for other states
-
-export interface LawnMowerEntityAttributes extends HassEntityAttributeBase {
-  status?: LawnMowerEntityState;
-  state?: LawnMowerEntityState;
-  fan_speed?: string;
-  fan_speed_list?: string[];
-  battery_level?: number;
-  battery_icon?: string;
-  raw_activity?: LawnMowerEntityActivity;
-  friendly_name?: string;
-  // Gardena Smart System attributes
-  activity?: string;
-  operating_hours?: number;
-  last_error_code?: string;
-  rf_link_level?: number;
-  rf_link_state?: string;
-  battery_state?: string;
+export interface HassEntity {
+  entity_id: string;
+  state: string;
+  last_changed: string;
+  last_updated: string;
+  attributes: Record<string, HassEntityAttributeValue> & {
+    friendly_name?: string;
+    battery?: number;
+    battery_level?: number;
+    status?: string;
+    supported_features?: number;
+    metrics?: {
+      raw_state?: string;
+      [key: string]: unknown;
+    };
+  };
 }
 
-export interface LawnMowerEntity extends HassEntityBase {
-  attributes: LawnMowerEntityAttributes;
-  state: LawnMowerEntityState;
+export interface HomeAssistant {
+  states: Record<string, HassEntity | undefined>;
+  language: string;
+  localize?: (key: string, ...args: unknown[]) => string | undefined;
+  callService: (
+    domain: string,
+    service: string,
+    serviceData?: Record<string, unknown>,
+    target?: Record<string, unknown>,
+  ) => Promise<unknown>;
 }
 
-export interface LawnMowerCardStat {
-  entity_id?: string;
-  attribute?: string;
-  value_template?: string;
-  unit?: string;
-  subtitle?: string;
-}
-
-export interface LawnMowerCardAction {
-  service: string;
-  service_data?: Record<string, unknown>;
-}
-
-export interface LawnMowerCardShortcut {
+export interface LovelaceCardConfig {
+  type: string;
+  entity?: string;
   name?: string;
-  icon?: string;
-  service?: string;
-  service_data?: Record<string, unknown>;
-  link?: string;
+  show_name?: boolean;
+  show_last_changed?: boolean;
+  show_controls?: boolean;
+  show_battery?: boolean;
+  color?: string;
 }
 
-export interface LawnMowerCardConfig {
-  entity: string;
-  map: string;
-  map_refresh: number;
-  image: string;
-  animated: boolean;
-  battery: string;
-  temperature: string;
-  humidity: string;
-  show_name: boolean;
-  show_status: boolean;
-  show_toolbar: boolean;
-  show_shortcuts: boolean;
-  compact_view: boolean;
-  stats: Record<string, LawnMowerCardStat[]>;
-  actions: Record<string, LawnMowerCardAction>;
-  shortcuts: LawnMowerCardShortcut[];
+export interface CustomCardEntry {
+  type: string;
+  name: string;
+  preview?: boolean;
+  description?: string;
+  documentationURL?: string;
+  getEntitySuggestion?: (
+    hass: HomeAssistant,
+    entityId: string,
+  ) => null | { config: LovelaceCardConfig; label?: string };
 }
 
-export interface LawnMowerServiceCallParams {
-  request: boolean;
-}
-
-export interface LawnMowerActionParams extends LawnMowerServiceCallParams {
-  defaultService?: string;
+declare global {
+  interface Window {
+    customCards?: CustomCardEntry[];
+  }
 }

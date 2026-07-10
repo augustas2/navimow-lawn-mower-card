@@ -1,137 +1,41 @@
 {
-  "name": "lawn-mower-card",
-  "version": "1.6.0",
+  "name": "navimow-lawn-mower-card",
+  "version": "0.1.0",
+  "description": "Home Assistant Lovelace card for lawn_mower entities with animated mower SVG.",
   "type": "module",
-  "description": "Lawn Mower cleaner card for Home Assistant Lovelace UI",
-  "main": "dist/lawn-mower-card.js",
-  "repository": {
-    "url": "https://github.com/cociweb/lawn-mower-card"
-  },
+  "main": "dist/navimow-lawn-mower-card.js",
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "start": "node node_modules/rollup/dist/bin/rollup -c --watch",
-    "lint": "node node_modules/eslint/bin/eslint.js src",
-    "lint:fix": "node node_modules/eslint/bin/eslint.js src --fix",
-    "format": "node node_modules/prettier/bin/prettier.cjs --write .",
-    "build": "NODE_ENV=production node node_modules/rollup/dist/bin/rollup -c",
-    "build:dev": "NODE_ENV=development node node_modules/rollup/dist/bin/rollup -c",
-    "test": "npm run lint && npm run build",
-    "test:dev": "npm run lint && npm run build:dev",
-    "lint-staged": "lint-staged",
-    "prepare": "node node_modules/husky/bin.js"
+    "dev": "vite --host 0.0.0.0",
+    "build": "vite build",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint . --max-warnings=0",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "check": "npm run typecheck && npm run lint && npm run format:check"
   },
   "keywords": [
     "home-assistant",
-    "homeassistant",
-    "hass",
-    "automation",
     "lovelace",
-    "custom-cards",
     "lawn-mower",
-    "hacs",
-    "hass"
+    "navimow",
+    "lit"
   ],
-  "author": "cociweb",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/cociweb/lawn-mower-card.git"
-  },
+  "author": "",
   "license": "MIT",
   "dependencies": {
-    "custom-card-helpers": "^2.0.0",
-    "ha-template": "^1.4.1",
-    "home-assistant-js-websocket": "^9.6.0",
-    "lit": "^3.3.2",
-    "lodash": "^4.17.23"
+    "lit": "^3.3.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.23.7",
-    "@babel/plugin-transform-runtime": "^7.23.7",
-    "@babel/preset-env": "^7.23.7",
-    "@eslint/eslintrc": "^3.3.1",
-    "@rollup/plugin-babel": "^7.0.0",
-    "@rollup/plugin-commonjs": "^29.0.0",
-    "@rollup/plugin-image": "^3.0.3",
-    "@rollup/plugin-json": "^6.1.0",
-    "@rollup/plugin-node-resolve": "^16.0.1",
-    "@rollup/plugin-replace": "^6.0.2",
-    "@rollup/plugin-terser": "^1.0.0",
-    "@semantic-release/git": "^10.0.1",
-    "@types/lodash": "^4.14.202",
-    "@typescript-eslint/eslint-plugin": "^8.50.1",
-    "@typescript-eslint/parser": "^8.50.1",
-    "eslint": "^10.1.0",
-    "eslint-config-prettier": "^10.0.2",
-    "eslint-plugin-import-x": "^4.16.2",
-    "husky": "^9.0.11",
-    "lint-staged": "^17.0.4",
-    "napi-postinstall": "^0.3.4",
-    "postcss": "^8.4.33",
-    "postcss-preset-env": "^11.2.0",
-    "prettier": "^3.1.1",
-    "rollup": "^4.9.4",
-    "rollup-plugin-postcss": "^4.0.2",
-    "rollup-plugin-postcss-lit": "^2.0.0",
-    "rollup-plugin-serve": "^3.0.0",
-    "rollup-plugin-typescript2": "^0.37.0",
-    "semantic-release": "^25.0.1",
-    "svgo": "^3.3.3",
-    "typescript": "^6.0.2"
-  },
-  "overrides": {
-    "svgo": "^3.3.3",
-    "sourcemap-codec": "npm:@jridgewell/sourcemap-codec@^1.5.5"
-  },
-  "browserslist": [
-    "last 2 versions",
-    "not dead"
-  ],
-  "lint-staged": {
-    "*.js": "node node_modules/eslint/bin/eslint.js --fix",
-    "**/*": "node node_modules/prettier/bin/prettier.cjs --write --ignore-unknown"
-  },
-  "prettier": {
-    "singleQuote": true
-  },
-  "eslintConfig": {
-    "extends": [
-      "eslint:recommended",
-      "plugin:@typescript-eslint/recommended",
-      "prettier"
-    ],
-    "parser": "@typescript-eslint/parser",
-    "parserOptions": {
-      "ecmaVersion": 2020,
-      "sourceType": "module"
-    },
-    "plugins": [
-      "import-x",
-      "@typescript-eslint"
-    ],
-    "env": {
-      "browser": true,
-      "es6": true
-    },
-    "rules": {}
-  },
-  "release": {
-    "branches": [
-      "main"
-    ],
-    "plugins": [
-      "@semantic-release/release-notes-generator",
-      "@semantic-release/npm",
-      [
-        "@semantic-release/github",
-        {
-          "assets": [
-            {
-              "path": "dist/lawn-mower-card.js",
-              "label": "lawn-mower-card.js"
-            }
-          ]
-        }
-      ],
-      "@semantic-release/git"
-    ]
+    "@eslint/js": "^9.32.0",
+    "@types/node": "^24.1.0",
+    "eslint": "^9.32.0",
+    "eslint-config-prettier": "^10.1.8",
+    "prettier": "^3.6.2",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.38.0",
+    "vite": "^7.0.6"
   }
 }
