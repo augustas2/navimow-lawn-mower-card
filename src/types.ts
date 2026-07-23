@@ -1,4 +1,4 @@
-import { LovelaceCardConfig } from "custom-card-helpers";
+import type { HomeAssistant, LovelaceCardConfig } from "custom-card-helpers";
 
 export type HassEntityAttributeValue =
     string | number | boolean | null | undefined | object;
@@ -40,7 +40,10 @@ export interface CustomCardEntry {
     getEntitySuggestion?: (
         hass: HomeAssistant,
         entityId: string,
-    ) => null | { config: LovelaceCardConfig; label?: string };
+    ) => null | {
+        config: LovelaceCardConfig;
+        label?: string;
+    };
 }
 
 declare global {

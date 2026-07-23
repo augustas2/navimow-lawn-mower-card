@@ -168,9 +168,21 @@ export class NavimowLawnMowerCard extends LitElement {
         return 3;
     }
 
-    public static getStubConfig(): Partial<NavimowCardConfig> {
+    public static getStubConfig(
+        hass: HomeAssistant,
+        entities: string[] = [],
+        entitiesFallback: string[] = [],
+    ): Partial<NavimowCardConfig> {
+        const lawnMowerEntity =
+            entities.find((entityId) => entityId.startsWith("lawn_mower.")) ??
+            entitiesFallback.find((entityId) => entityId.startsWith("lawn_mower.")) ??
+            Object.keys(hass.states).find((entityId) =>
+                entityId.startsWith("lawn_mower."),
+            ) ??
+            "";
+
         return {
-            entity: null,
+            entity: lawnMowerEntity,
             ...NavimowLawnMowerCard.DEFAULT_CONFIG,
         };
     }
@@ -331,12 +343,17 @@ window.customCards.push({
     name: "Navimow Lawn Mower Card",
     preview: true,
     description:
-        "Kortelė lawn_mower entity su baterija, būsenos tekstu, Navimow stiliaus SVG animacija ir komandomis.",
+        "Lawn mower card with battery, translated state, SVG animation and controls.",
     documentationURL:
         "https://developers.home-assistant.io/docs/frontend/custom-ui/custom-card/",
     getEntitySuggestion: (_hass: HomeAssistant, entityId: string) => {
         if (!entityId.startsWith("lawn_mower.")) return null;
-        return { config: { type: "custom:" + CARD_TYPE, entity: entityId } };
+        return {
+            config: {
+                type: `custom:${CARD_TYPE}`,
+                entity: entityId,
+            },
+        };
     },
 });
 

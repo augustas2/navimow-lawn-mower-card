@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b533939e-9659-4424-a9cf-b77e17b87898" name="Changes" comment="working">
-      <change afterPath="$PROJECT_DIR$/src/assets/navimow.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/animations.styles.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/card.styles.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/translations/en.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/translations/localize.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/translations/lt.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/vite-env.d.ts" afterDir="false" />
+    <list default="true" id="b533939e-9659-4424-a9cf-b77e17b87898" name="Changes" comment="Added languages">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/navimow-lawn-mower-card.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/navimow-lawn-mower-card.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/translations/lt.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/translations/lt.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -143,7 +137,7 @@
       <workItem from="1783693173579" duration="300000" />
       <workItem from="1783693555493" duration="3069000" />
       <workItem from="1783775495678" duration="4640000" />
-      <workItem from="1784806199497" duration="5270000" />
+      <workItem from="1784806199497" duration="6369000" />
     </task>
     <task id="LOCAL−00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -159,7 +153,14 @@
       <option name="presentableId" value="LOCAL−00002" />
       <updated>1783713095523</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL−00003" summary="Added languages">
+      <option name="closed" value="true" />
+      <created>1784812026891</created>
+      <option name="number" value="LOCAL−00003" />
+      <option name="presentableId" value="LOCAL−00003" />
+      <updated>1784812026891</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -173,6 +174,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Initial commit" />
     <MESSAGE value="working" />
-    <option name="LAST_COMMIT_MESSAGE" value="working" />
+    <MESSAGE value="Added languages" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added languages" />
   </component>
 </project>

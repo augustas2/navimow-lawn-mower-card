@@ -12,7 +12,7 @@
         "color_description": "Akcento spalva, pvz. var(--primary-color)"
     },
     "actions": {
-        "start_mowing": "Pradėti",
+        "start_mowing": "Pradėti pjauti",
         "pause": "Pauzė",
         "dock": "Grįžti į stotelę"
     },
