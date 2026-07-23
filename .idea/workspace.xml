@@ -2,12 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="01656384-0f22-4dcd-a0ef-2a850e377c5c" name="Changes" comment="Updated">
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/constants.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/navimow-lawn-mower-card.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/navimow-lawn-mower-card.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/card.styles.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/card.styles.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,12 +58,14 @@
     "node.js.selected.package.standard": "",
     "nodejs_package_manager_path": "npm",
     "npm.dev.executor": "Run",
+    "npm.lint.executor": "Run",
+    "npm.typecheck.executor": "Run",
     "prettierjs.PrettierConfiguration.Package": "C:\\Users\\augus\\IdeaProjects\\navimow-lawn-mower-card\\node_modules\\prettier",
     "settings.editor.selected.configurable": "settings.javascript.prettier",
     "ts.external.directory.path": "C:\\Users\\augus\\IdeaProjects\\navimow-lawn-mower-card\\node_modules\\typescript\\lib"
   }
 }]]></component>
-  <component name="RunManager">
+  <component name="RunManager" selected="npm.lint">
     <configuration name="dev" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
@@ -77,8 +76,30 @@
       <envs />
       <method v="2" />
     </configuration>
+    <configuration name="lint" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="lint" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <configuration name="typecheck" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="typecheck" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="npm.lint" />
+        <item itemvalue="npm.typecheck" />
         <item itemvalue="npm.dev" />
       </list>
     </recent_temporary>
@@ -98,14 +119,24 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1784826645228</updated>
-      <workItem from="1784826647290" duration="565000" />
+      <workItem from="1784826647290" duration="1336000" />
     </task>
+    <task id="LOCAL−00001" summary="Updated">
+      <option name="closed" value="true" />
+      <created>1784827365916</created>
+      <option name="number" value="LOCAL−00001" />
+      <option name="presentableId" value="LOCAL−00001" />
+      <updated>1784827365916</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="CHECK_NEW_TODO" value="false" />
     <MESSAGE value="Updated" />
     <option name="LAST_COMMIT_MESSAGE" value="Updated" />
   </component>

@@ -6,6 +6,14 @@ import type { HomeAssistant } from 'custom-card-helpers';
 import { getCurrentDocumentLanguage, localize } from './translations/localize';
 import mowerSvg from './assets/navimow.svg?raw';
 import { animationStyles, cardStyles } from './styles';
+import {
+    ACTION_ICONS_MAP,
+    CARD_TYPE,
+    ENTITY_STATE_MAP,
+    LawnMowerFeature,
+    visualStateColors,
+    RAW_STATE_MAP,
+} from './constants';
 import type {
     CardAction,
     CustomCardEntry,
@@ -13,29 +21,6 @@ import type {
     NavimowCardConfig,
     VisualState,
 } from './types';
-
-const CARD_TYPE = 'navimow-lawn-mower-card';
-
-const enum LawnMowerFeature {
-    StartMowing = 1,
-    Pause = 2,
-    Dock = 4,
-}
-
-const visualStateColors: Record<VisualState, string> = {
-    mowing: 'var(--state-lawn_mower-mowing-color, var(--success-color, #43a047))',
-    returning: 'var(--state-lawn_mower-returning-color, var(--info-color, #039be5))',
-    paused: 'var(--state-lawn_mower-paused-color, var(--warning-color, #f9a825))',
-    error: 'var(--error-color, #db4437)',
-    docked: 'var(--state-inactive-color, #6f7287)',
-    idle: 'var(--state-inactive-color, #6f7287)',
-};
-
-const actionIcons: Record<CardAction, string> = {
-    start_mowing: 'mdi:play',
-    pause: 'mdi:pause',
-    dock: 'mdi:home-import-outline',
-};
 
 const disabledByAction: Record<CardAction, (visualState: VisualState) => boolean> = {
     start_mowing: (visualState) =>
@@ -45,29 +30,15 @@ const disabledByAction: Record<CardAction, (visualState: VisualState) => boolean
 };
 
 const computeVisualState = (stateObj: HassEntity | undefined): VisualState => {
-    if (!stateObj || stateObj.state === 'unavailable' || stateObj.state === 'unknown') {
-        return 'idle';
-    }
+    if (!stateObj) return 'idle';
 
-    if (stateObj.state === 'error') return 'error';
+    const rawState = stateObj.attributes.metrics?.raw_state;
 
-    if (stateObj.state === 'mowing') return 'mowing';
-
-    if (stateObj.state === 'returning') return 'returning';
-
-    if (stateObj.state === 'paused') return 'paused';
-
-    if (stateObj.state === 'docked') return 'docked';
-
-    const rawMetric = stateObj.attributes.metrics?.raw_state;
-
-    if (rawMetric === 'isDocked') return 'docked';
-
-    if (rawMetric === 'isMowing') return 'mowing';
-
-    if (rawMetric === 'isReturning') return 'returning';
-
-    return 'idle';
+    return (
+        ENTITY_STATE_MAP[stateObj.state] ??
+        (typeof rawState === 'string' ? RAW_STATE_MAP[rawState] : undefined) ??
+        'idle'
+    );
 };
 
 const supportedFeatures = (stateObj: HassEntity | undefined): number => {
@@ -134,7 +105,7 @@ const formatRelativeTime = (dateIso: string | undefined, language?: string): str
     });
 };
 
-const iconForAction = (action: CardAction): string => actionIcons[action];
+const iconForAction = (action: CardAction): string => ACTION_ICONS_MAP[action];
 
 const actionLabel = (action: CardAction, language?: string): string =>
     localize(`actions.${action}`, language);
