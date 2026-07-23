@@ -11,8 +11,6 @@ export const cardStyles = css`
         --mower-icon-button-bg: color-mix(in srgb, var(--mower-color) 10%, transparent);
 
         overflow: hidden;
-        border-radius: var(--ha-card-border-radius);
-        background: var(--ha-card-background, var(--card-background-color));
         color: var(--mower-text-color);
     }
 
@@ -49,13 +47,12 @@ export const cardStyles = css`
 
     .battery ha-icon {
         --mdc-icon-size: 18px;
-        line-height: 1;
     }
 
     .state-text {
         font-style: normal;
         font-weight: var(--ha-font-weight-normal);
-        font-size: clamp(22px, 4vw, 30px);
+        font-size: clamp(22px, 4vw, 26px);
         line-height: var(--ha-line-height-condensed);
     }
 

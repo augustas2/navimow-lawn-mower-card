@@ -46,6 +46,11 @@ export interface CustomCardEntry {
     };
 }
 
+export type VisualState = 'mowing' | 'docked' | 'returning' | 'paused' | 'error' | 'idle';
+
+export type CardAction = 'start_mowing' | 'pause' | 'dock';
+
+
 declare global {
     interface Window {
         customCards?: CustomCardEntry[];

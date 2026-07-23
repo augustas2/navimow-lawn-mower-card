@@ -6,7 +6,13 @@ import type { HomeAssistant } from 'custom-card-helpers';
 import { getCurrentDocumentLanguage, localize } from './translations/localize';
 import mowerSvg from './assets/navimow.svg?raw';
 import { animationStyles, cardStyles } from './styles';
-import type { CustomCardEntry, HassEntity, NavimowCardConfig } from './types';
+import type {
+    CardAction,
+    CustomCardEntry,
+    HassEntity,
+    NavimowCardConfig,
+    VisualState,
+} from './types';
 
 const CARD_TYPE = 'navimow-lawn-mower-card';
 
@@ -15,10 +21,6 @@ const enum LawnMowerFeature {
     Pause = 2,
     Dock = 4,
 }
-
-type VisualState = 'mowing' | 'docked' | 'returning' | 'paused' | 'error' | 'idle';
-
-type CardAction = 'start_mowing' | 'pause' | 'dock';
 
 const visualStateColors: Record<VisualState, string> = {
     mowing: 'var(--state-lawn_mower-mowing-color, var(--success-color, #43a047))',
@@ -81,11 +83,12 @@ const hasFeature = (
 
 const batteryIcon = (battery: number): string => {
     if (battery <= 5) return 'mdi:battery-outline';
+
     if (battery >= 95) return 'mdi:battery';
 
     const level = Math.ceil(battery / 10) * 10;
 
-    return `mdi:battery-${level}`;
+    return `mdi:battery-${String(level)}`;
 };
 
 const batteryLevel = (stateObj: HassEntity | undefined): number | undefined => {

@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b533939e-9659-4424-a9cf-b77e17b87898" name="Changes" comment="Latest changes">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="01656384-0f22-4dcd-a0ef-2a850e377c5c" name="Changes" comment="Updated">
+      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/navimow-lawn-mower-card.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/navimow-lawn-mower-card.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/styles/card.styles.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/card.styles.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -14,36 +16,31 @@
   </component>
   <component name="ComposerSettings">
     <execution>
-      <execution />
+      <execution>
+        <execution />
+      </execution>
     </execution>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_BRANCH_BY_REPOSITORY">
-      <map>
-        <entry key="$PROJECT_DIR$" value="main" />
-      </map>
-    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory">{
-  &quot;lastFilter&quot;: {
-    &quot;state&quot;: &quot;OPEN&quot;,
-    &quot;assignee&quot;: &quot;augustas2&quot;
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "augustas2"
   }
-}</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;git@github.com:augustas2/navimow-lawn-mower-card.git&quot;,
-    &quot;accountId&quot;: &quot;190d4626-1295-4a33-ada9-802a20a12532&quot;
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "git@github.com:augustas2/navimow-lawn-mower-card.git",
+    "accountId": "190d4626-1295-4a33-ada9-802a20a12532"
   }
-}</component>
-  <component name="ProblemsViewState">
-    <option name="selectedTabId" value="CurrentFile" />
-  </component>
-  <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 6
-}</component>
-  <component name="ProjectId" id="3EGnW8M9nkJYym367UgpNCXEDi2" />
+}]]></component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 7,
+  "fromUser": false
+}]]></component>
+  <component name="ProjectId" id="3Gug0WlYGN2qBQgN7QN90L971LJ" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -52,49 +49,24 @@
   "keyToString": {
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "codeWithMe.voiceChat.enabledByDefault": "false",
     "git-widget-placeholder": "2nd-svg",
     "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "C:/Users/augus/IdeaProjects/navimow-lawn-mower-card",
     "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.jshint": "true",
     "node.js.detected.package.standard": "true",
-    "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.jshint": "",
     "node.js.selected.package.standard": "",
-    "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "npm.build.executor": "Run",
-    "npm.check.executor": "Run",
     "npm.dev.executor": "Run",
-    "npm.format.executor": "Run",
-    "npm.lint.executor": "Run",
-    "npm.lint:fix.executor": "Run",
-    "npm.typecheck.executor": "Run",
-    "prettierjs.PrettierConfiguration.Package": "C:\\Users\\augus\\IdeaProjects\\lawn-mower-card\\node_modules\\prettier",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "settings.javascript.linters.eslint",
-    "ts.external.directory.path": "C:\\Users\\augus\\AppData\\Roaming\\JetBrains\\IntelliJIdea2026.2\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
-    "vue.rearranger.settings.migration": "true"
+    "prettierjs.PrettierConfiguration.Package": "C:\\Users\\augus\\IdeaProjects\\navimow-lawn-mower-card\\node_modules\\prettier",
+    "settings.editor.selected.configurable": "settings.javascript.prettier",
+    "ts.external.directory.path": "C:\\Users\\augus\\IdeaProjects\\navimow-lawn-mower-card\\node_modules\\typescript\\lib"
   }
 }]]></component>
-  <component name="RunManager" selected="npm.build">
-    <configuration name="build" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
-      <package-json value="$PROJECT_DIR$/package.json" />
-      <command value="run" />
-      <scripts>
-        <script value="build" />
-      </scripts>
-      <node-interpreter value="project" />
-      <envs />
-      <method v="2" />
-    </configuration>
+  <component name="RunManager">
     <configuration name="dev" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
@@ -105,42 +77,8 @@
       <envs />
       <method v="2" />
     </configuration>
-    <configuration name="format" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
-      <package-json value="$PROJECT_DIR$/package.json" />
-      <command value="run" />
-      <scripts>
-        <script value="format" />
-      </scripts>
-      <node-interpreter value="project" />
-      <envs />
-      <method v="2" />
-    </configuration>
-    <configuration name="lint" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
-      <package-json value="$PROJECT_DIR$/package.json" />
-      <command value="run" />
-      <scripts>
-        <script value="lint" />
-      </scripts>
-      <node-interpreter value="project" />
-      <envs />
-      <method v="2" />
-    </configuration>
-    <configuration name="typecheck" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
-      <package-json value="$PROJECT_DIR$/package.json" />
-      <command value="run" />
-      <scripts>
-        <script value="typecheck" />
-      </scripts>
-      <node-interpreter value="project" />
-      <envs />
-      <method v="2" />
-    </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="npm.build" />
-        <item itemvalue="npm.lint" />
-        <item itemvalue="npm.typecheck" />
-        <item itemvalue="npm.format" />
         <item itemvalue="npm.dev" />
       </list>
     </recent_temporary>
@@ -155,83 +93,21 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="b533939e-9659-4424-a9cf-b77e17b87898" name="Changes" comment="" />
-      <created>1779813802489</created>
+      <changelist id="01656384-0f22-4dcd-a0ef-2a850e377c5c" name="Changes" comment="" />
+      <created>1784826645228</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1779813802489</updated>
-      <workItem from="1779813803884" duration="227000" />
-      <workItem from="1779814241905" duration="1289000" />
-      <workItem from="1779895768711" duration="21000" />
-      <workItem from="1783692890517" duration="184000" />
-      <workItem from="1783693173579" duration="300000" />
-      <workItem from="1783693555493" duration="3069000" />
-      <workItem from="1783775495678" duration="4640000" />
-      <workItem from="1784806199497" duration="7028000" />
-      <workItem from="1784813695343" duration="1384000" />
-      <workItem from="1784815090630" duration="765000" />
-      <workItem from="1784816221541" duration="6916000" />
+      <updated>1784826645228</updated>
+      <workItem from="1784826647290" duration="565000" />
     </task>
-    <task id="LOCAL−00001" summary="Initial commit">
-      <option name="closed" value="true" />
-      <created>1783696248626</created>
-      <option name="number" value="LOCAL−00001" />
-      <option name="presentableId" value="LOCAL−00001" />
-      <updated>1783696248626</updated>
-    </task>
-    <task id="LOCAL−00002" summary="working">
-      <option name="closed" value="true" />
-      <created>1783713095523</created>
-      <option name="number" value="LOCAL−00002" />
-      <option name="presentableId" value="LOCAL−00002" />
-      <updated>1783713095523</updated>
-    </task>
-    <task id="LOCAL−00003" summary="Added languages">
-      <option name="closed" value="true" />
-      <created>1784812026891</created>
-      <option name="number" value="LOCAL−00003" />
-      <option name="presentableId" value="LOCAL−00003" />
-      <updated>1784812026891</updated>
-    </task>
-    <task id="LOCAL−00004" summary="Latest changes">
-      <option name="closed" value="true" />
-      <created>1784813050045</created>
-      <option name="number" value="LOCAL−00004" />
-      <option name="presentableId" value="LOCAL−00004" />
-      <updated>1784813050045</updated>
-    </task>
-    <task id="LOCAL−00005" summary="Latest changes">
-      <option name="closed" value="true" />
-      <created>1784818248676</created>
-      <option name="number" value="LOCAL−00005" />
-      <option name="presentableId" value="LOCAL−00005" />
-      <updated>1784818248676</updated>
-    </task>
-    <task id="LOCAL−00006" summary="Latest changes">
-      <option name="closed" value="true" />
-      <created>1784823298631</created>
-      <option name="number" value="LOCAL−00006" />
-      <option name="presentableId" value="LOCAL−00006" />
-      <updated>1784823298631</updated>
-    </task>
-    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
-    <option name="exactExcludedFiles">
-      <list>
-        <option value="$PROJECT_DIR$/node_modules/@eslint/plugin-kit/dist/cjs/types.d.cts" />
-        <option value="$PROJECT_DIR$/node_modules/@eslint/plugin-kit/dist/cjs/types.d.cts" />
-      </list>
-    </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Initial commit" />
-    <MESSAGE value="working" />
-    <MESSAGE value="Added languages" />
-    <MESSAGE value="Latest changes" />
-    <option name="LAST_COMMIT_MESSAGE" value="Latest changes" />
+    <MESSAGE value="Updated" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
