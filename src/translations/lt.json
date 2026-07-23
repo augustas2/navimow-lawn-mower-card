@@ -1,0 +1,32 @@
+{
+    "common": {
+        "entity": "Robotas vejapjovė",
+        "name": "Pavadinimas",
+        "color": "Akcento spalva"
+    },
+    "config": {
+        "show_battery": "Rodyti bateriją",
+        "show_last_changed": "Rodyti paskutinį pokytį",
+        "show_controls": "Rodyti valdymo mygtukus",
+        "show_name": "Rodyti pavadinimą",
+        "color_description": "Akcento spalva, pvz. var(--primary-color)"
+    },
+    "actions": {
+        "start_mowing": "Pradėti",
+        "pause": "Pauzė",
+        "dock": "Grįžti į stotelę"
+    },
+    "card": {
+        "battery": "Baterija",
+        "open_more_info": "Atidaryti {name}",
+        "entity_not_found": "Entity nerastas",
+        "just_now": "ką tik",
+        "minutes_ago": "prieš {count} min.",
+        "hours_ago": "prieš {count} val.",
+        "days_ago": "prieš {count} d."
+    },
+    "errors": {
+        "entity_required": "Reikia nurodyti lawn_mower entity",
+        "invalid_entity": "Ši kortelė skirta tik lawn_mower.* entity"
+    }
+}
