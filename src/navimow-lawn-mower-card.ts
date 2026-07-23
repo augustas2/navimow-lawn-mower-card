@@ -235,7 +235,7 @@ export class NavimowLawnMowerCard extends LitElement {
         const color = this.config?.color ?? this.computeStateColor(visualState);
 
         return html`
-            <ha-card class=${visualState} style=${styleMap({ '--mower-color': color })}>
+            <ha-card style=${styleMap({ '--mower-color': color })}>
                 <button
                     class="content"
                     type="button"

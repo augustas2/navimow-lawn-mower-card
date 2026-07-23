@@ -49,60 +49,66 @@
                     flood-opacity="0.22"
             />
         </filter>
+        <clipPath id="wheelLeftClip">
+            <rect x="20" y="93" width="34" height="94" rx="15" />
+        </clipPath>
+        <clipPath id="wheelRightClip">
+            <rect x="206" y="93" width="34" height="94" rx="15" />
+        </clipPath>
     </defs>
-    <g class="wheel wheel-left">
-        <rect
-                x="20"
-                y="93"
-                width="34"
-                height="94"
-                rx="15"
-                fill="#23262b"
-        />
-        <path
-                class="wheel-tread"
-                d="M45 101 v78"
-                stroke="#555b63"
-                stroke-width="15"
-                stroke-linecap="round"
-                stroke-dasharray="7 8"
-        />
-        <path
-                d="M27 104 h8 M27 139 h8 M27 174 h8"
-                stroke="#ff5a1f"
-                stroke-width="6"
-                stroke-linecap="round"
-        />
-    </g>
-    <g class="wheel wheel-right">
-        <rect
-                x="206"
-                y="93"
-                width="34"
-                height="94"
-                rx="15"
-                fill="#23262b"
-        />
-        <path
-                class="wheel-tread"
-                d="M215 101 v78"
-                stroke="#555b63"
-                stroke-width="15"
-                stroke-linecap="round"
-                stroke-dasharray="7 8"
-        />
-        <path
-                d="M225 104 h8 M225 139 h8 M225 174 h8"
-                stroke="#ff5a1f"
-                stroke-width="6"
-                stroke-linecap="round"
-        />
-    </g>
-    <path
-            d="M39 105 C43 42 217 42 221 105 L234 184 C238 214 211 234 174 238 H86 C49 234 22 214 26 184 Z"
-            fill="#15171a"
-            opacity="0.18"
-    />
+    <g class="mower-assembly">
+        <g class="wheel wheel-left">
+            <rect
+                    x="20"
+                    y="93"
+                    width="34"
+                    height="94"
+                    rx="15"
+                    fill="#23262b"
+            />
+            <path
+                    d="M45 101 v78"
+                    stroke="#555b63"
+                    stroke-width="15"
+                    stroke-linecap="round"
+                    stroke-dasharray="7 8"
+            />
+            <g clip-path="url(#wheelLeftClip)">
+                <path
+                        class="wheel-tread wheel-tread-left"
+                        d="M27 104 h8 M27 139 h8 M27 174 h8 M27 209 h8"
+                        stroke="#ff5a1f"
+                        stroke-width="6"
+                        stroke-linecap="round"
+                />
+            </g>
+        </g>
+        <g class="wheel wheel-right">
+            <rect
+                    x="206"
+                    y="93"
+                    width="34"
+                    height="94"
+                    rx="15"
+                    fill="#23262b"
+            />
+            <path
+                    d="M215 101 v78"
+                    stroke="#555b63"
+                    stroke-width="15"
+                    stroke-linecap="round"
+                    stroke-dasharray="7 8"
+            />
+            <g clip-path="url(#wheelRightClip)">
+                <path
+                        class="wheel-tread wheel-tread-right"
+                        d="M225 104 h8 M225 139 h8 M225 174 h8 M225 209 h8"
+                        stroke="#ff5a1f"
+                        stroke-width="6"
+                        stroke-linecap="round"
+                />
+            </g>
+        </g>
     <g class="mower-body" filter="url(#softShadow)">
         <path
                 class="outer-shell"
@@ -282,6 +288,7 @@
         />
         <g class="leds">
             <rect
+                    class="led"
                     x="110"
                     y="154"
                     width="10"
@@ -290,6 +297,7 @@
                     fill="#ffffff"
             />
             <rect
+                    class="led"
                     x="125"
                     y="154"
                     width="10"
@@ -298,6 +306,7 @@
                     fill="#ffffff"
             />
             <rect
+                    class="led"
                     x="140"
                     y="154"
                     width="10"
@@ -306,5 +315,6 @@
                     fill="#ffffff"
             />
         </g>
+    </g>
     </g>
 </svg>
