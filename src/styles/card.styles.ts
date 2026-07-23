@@ -72,8 +72,8 @@ export const cardStyles = css`
     }
 
     .svg-wrap {
-        width: min(200px, 32vw);
-        height: min(200px, 32vw);
+        width: min(220px, 32vw);
+        height: min(220px, 32vw);
         margin-top: var(--ha-space-4);
         margin-bottom: var(--ha-space-3);
         display: flex;

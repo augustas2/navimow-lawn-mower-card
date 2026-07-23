@@ -1,5 +1,5 @@
-import en from "./en.json";
-import lt from "./lt.json";
+import en from './en.json';
+import lt from './lt.json';
 
 type TranslationValue = string | TranslationTree;
 
@@ -9,17 +9,22 @@ interface TranslationTree {
 
 type TranslationVariables = Record<string, string | number>;
 
-const translations: Record<string, TranslationTree> = {
+const translations = {
     en,
     lt,
-};
+} satisfies Record<string, TranslationTree>;
 
-const DEFAULT_LANGUAGE = "en";
+type SupportedLanguage = keyof typeof translations;
 
-const normalizeLanguage = (language?: string): string => {
-    const normalizedLanguage = language?.toLowerCase().split("-")[0];
+const DEFAULT_LANGUAGE: SupportedLanguage = 'en';
 
-    return normalizedLanguage && normalizedLanguage in translations
+const isSupportedLanguage = (language: string): language is SupportedLanguage =>
+    language in translations;
+
+const normalizeLanguage = (language?: string): SupportedLanguage => {
+    const normalizedLanguage = language?.toLowerCase().split('-')[0];
+
+    return normalizedLanguage && isSupportedLanguage(normalizedLanguage)
         ? normalizedLanguage
         : DEFAULT_LANGUAGE;
 };
@@ -29,11 +34,11 @@ const getNestedValue = (
     key: string,
 ): string | undefined => {
     const value = key
-        .split(".")
+        .split('.')
         .reduce<TranslationValue | undefined>((currentValue, keyPart) => {
             if (
                 !currentValue ||
-                typeof currentValue === "string" ||
+                typeof currentValue === 'string' ||
                 !(keyPart in currentValue)
             ) {
                 return undefined;
@@ -42,7 +47,7 @@ const getNestedValue = (
             return currentValue[keyPart];
         }, translationsTree);
 
-    return typeof value === "string" ? value : undefined;
+    return typeof value === 'string' ? value : undefined;
 };
 
 const replaceVariables = (value: string, variables: TranslationVariables): string =>

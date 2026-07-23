@@ -14,7 +14,8 @@
         "declaration": true,
         "sourceMap": true,
         "outDir": "dist",
-        "types": ["node"]
+        "types": ["node"],
+        "noEmit": true
     },
-    "include": ["src/**/*.ts", "vite.config.ts", "eslint.config.js"]
+    "include": ["src/**/*.ts", "vite.config.ts"]
 }
