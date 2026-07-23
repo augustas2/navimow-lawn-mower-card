@@ -11,8 +11,8 @@ export const cardStyles = css`
         --mower-icon-button-bg: color-mix(in srgb, var(--mower-color) 10%, transparent);
 
         overflow: hidden;
-        border-radius: var(--ha-card-border-radius, 14px);
-        background: var(--ha-card-background, var(--card-background-color, #fff));
+        border-radius: var(--ha-card-border-radius);
+        background: var(--ha-card-background, var(--card-background-color));
         color: var(--mower-text-color);
     }
 
@@ -26,7 +26,7 @@ export const cardStyles = css`
         flex-direction: column;
         align-items: center;
         width: 100%;
-        padding: 14px 16px 8px;
+        padding: var(--ha-space-4) var(--ha-space-4) var(--ha-space-2);
         text-align: center;
         font: inherit;
     }
@@ -41,9 +41,9 @@ export const cardStyles = css`
     .battery {
         display: inline-flex;
         align-items: center;
-        gap: 6px;
-        font-size: 15px;
-        font-weight: var(--ha-font-weight-medium, 600);
+        gap: var(--ha-space-1);
+        font-size: var(--ha-font-size-m);
+        font-weight: var(--ha-font-weight-medium);
         color: var(--mower-secondary-text-color);
     }
 
@@ -63,7 +63,7 @@ export const cardStyles = css`
         margin-top: var(--ha-space-1);
         font-style: normal;
         font-size: var(--ha-font-size-l);
-        font-weight: var(--ha-font-weight-medium, 500);
+        font-weight: var(--ha-font-weight-medium);
         line-height: var(--ha-line-height-normal);
         letter-spacing: 0.1px;
     }
@@ -87,7 +87,7 @@ export const cardStyles = css`
 
     .name {
         margin-bottom: var(--ha-space-3);
-        font-size: 15px;
+        font-size: var(--ha-font-size-m);
         line-height: 1.2;
         font-weight: var(--ha-font-weight-bold);
         color: var(--mower-text-color);
@@ -95,16 +95,16 @@ export const cardStyles = css`
 
     .actions {
         display: flex;
-        gap: 14px;
+        gap: var(--ha-space-3);
         align-items: center;
-        padding: 10px 18px 14px;
+        padding: var(--ha-space-3) var(--ha-space-4) var(--ha-space-3);
         border-top: 1px solid var(--divider-color, rgba(0, 0, 0, 0.08));
     }
 
     .action-button {
         appearance: none;
         border: 0;
-        border-radius: 14px;
+        border-radius: var(--ha-border-radius-lg);
         background: var(--mower-icon-button-bg);
         color: var(--mower-color);
         width: 48px;

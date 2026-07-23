@@ -79,6 +79,15 @@ const hasFeature = (
     feature: LawnMowerFeature,
 ): boolean => (supportedFeatures(stateObj) & feature) !== 0;
 
+const batteryIcon = (battery: number): string => {
+    if (battery <= 5) return 'mdi:battery-outline';
+    if (battery >= 95) return 'mdi:battery';
+
+    const level = Math.ceil(battery / 10) * 10;
+
+    return `mdi:battery-${level}`;
+};
+
 const batteryLevel = (stateObj: HassEntity | undefined): number | undefined => {
     const battery = stateObj?.attributes.battery ?? stateObj?.attributes.battery_level;
 
@@ -268,9 +277,7 @@ export class NavimowLawnMowerCard extends LitElement {
                                       class="battery"
                                       title=${localize('card.battery', this.hass?.language)}
                                   >
-                                      <ha-icon
-                                          icon=${battery > 20 ? 'mdi:battery' : 'mdi:battery-alert'}
-                                      ></ha-icon>
+                                      <ha-icon icon=${batteryIcon(battery)}></ha-icon>
                                       <span>${battery}%</span>
                                   </div>`
                                 : html`<span></span>`

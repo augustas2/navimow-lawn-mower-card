@@ -2,16 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b533939e-9659-4424-a9cf-b77e17b87898" name="Changes" comment="Latest changes">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/eslint.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/eslint.config.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/navimow-lawn-mower-card.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/navimow-lawn-mower-card.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/animations.styles.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/animations.styles.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/styles/card.styles.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/card.styles.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/translations/lt.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/translations/lt.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/vite-env.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/vite-env.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vite.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/vite.config.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -176,7 +170,7 @@
       <workItem from="1784806199497" duration="7028000" />
       <workItem from="1784813695343" duration="1384000" />
       <workItem from="1784815090630" duration="765000" />
-      <workItem from="1784816221541" duration="4672000" />
+      <workItem from="1784816221541" duration="6916000" />
     </task>
     <task id="LOCAL−00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -213,7 +207,14 @@
       <option name="presentableId" value="LOCAL−00005" />
       <updated>1784818248676</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL−00006" summary="Latest changes">
+      <option name="closed" value="true" />
+      <created>1784823298631</created>
+      <option name="number" value="LOCAL−00006" />
+      <option name="presentableId" value="LOCAL−00006" />
+      <updated>1784823298631</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
