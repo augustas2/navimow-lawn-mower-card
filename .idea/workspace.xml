@@ -3,15 +3,15 @@
   <component name="ChangeListManager">
     <list default="true" id="b533939e-9659-4424-a9cf-b77e17b87898" name="Changes" comment="Latest changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.prettierrc.json" beforeDir="false" afterPath="$PROJECT_DIR$/.prettierrc.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/eslint.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/eslint.config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/navimow-lawn-mower-card.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/navimow-lawn-mower-card.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/animations.styles.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/animations.styles.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/styles/card.styles.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/card.styles.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/translations/localize.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/translations/localize.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/translations/lt.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/translations/lt.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/vite-env.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/vite-env.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vite.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/vite.config.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -90,7 +90,7 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="npm.typecheck">
+  <component name="RunManager" selected="npm.build">
     <configuration name="build" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
@@ -111,21 +111,21 @@
       <envs />
       <method v="2" />
     </configuration>
-    <configuration name="lint" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+    <configuration name="format" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
       <scripts>
-        <script value="lint" />
+        <script value="format" />
       </scripts>
       <node-interpreter value="project" />
       <envs />
       <method v="2" />
     </configuration>
-    <configuration name="lint:fix" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+    <configuration name="lint" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
       <scripts>
-        <script value="lint:fix" />
+        <script value="lint" />
       </scripts>
       <node-interpreter value="project" />
       <envs />
@@ -143,10 +143,10 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="npm.typecheck" />
-        <item itemvalue="npm.lint" />
         <item itemvalue="npm.build" />
-        <item itemvalue="npm.lint:fix" />
+        <item itemvalue="npm.lint" />
+        <item itemvalue="npm.typecheck" />
+        <item itemvalue="npm.format" />
         <item itemvalue="npm.dev" />
       </list>
     </recent_temporary>
@@ -176,7 +176,7 @@
       <workItem from="1784806199497" duration="7028000" />
       <workItem from="1784813695343" duration="1384000" />
       <workItem from="1784815090630" duration="765000" />
-      <workItem from="1784816221541" duration="1790000" />
+      <workItem from="1784816221541" duration="4672000" />
     </task>
     <task id="LOCAL−00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -206,7 +206,14 @@
       <option name="presentableId" value="LOCAL−00004" />
       <updated>1784813050045</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL−00005" summary="Latest changes">
+      <option name="closed" value="true" />
+      <created>1784818248676</created>
+      <option name="number" value="LOCAL−00005" />
+      <option name="presentableId" value="LOCAL−00005" />
+      <updated>1784818248676</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

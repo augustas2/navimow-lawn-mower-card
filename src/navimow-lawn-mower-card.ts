@@ -3,7 +3,6 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { styleMap } from 'lit/directives/style-map.js';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import type { HomeAssistant } from 'custom-card-helpers';
-
 import { getCurrentDocumentLanguage, localize } from './translations/localize';
 import mowerSvg from './assets/navimow.svg?raw';
 import { animationStyles, cardStyles } from './styles';
@@ -240,7 +239,11 @@ export class NavimowLawnMowerCard extends LitElement {
         const name = this.config?.name ?? stateObj?.attributes.friendly_name ?? entityId;
         const stateText =
             this.hass && stateObj
-                ? this.hass.formatEntityState(stateObj)
+                ? (
+                      this.hass as HomeAssistant & {
+                          formatEntityState(stateObj: HassEntity, state?: string): string;
+                      }
+                  ).formatEntityState(stateObj)
                 : localize('card.entity_not_found', this.hass?.language);
         const lastChanged = formatRelativeTime(
             stateObj?.last_changed,
@@ -345,7 +348,7 @@ export class NavimowLawnMowerCard extends LitElement {
         return html` <div class="svg-wrap ${visualState}">${unsafeSVG(mowerSvg)}</div> `;
     }
 
-    static override styles: CSSResultGroup = [cardStyles, animationStyles];
+    public static override styles: CSSResultGroup = [cardStyles, animationStyles];
 }
 
 window.customCards = window.customCards ?? [];

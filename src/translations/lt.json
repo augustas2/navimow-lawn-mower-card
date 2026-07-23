@@ -20,10 +20,10 @@
         "battery": "Baterija",
         "open_more_info": "Atidaryti {name}",
         "entity_not_found": "Entity nerastas",
-        "just_now": "ką tik",
-        "minutes_ago": "prieš {count} min.",
-        "hours_ago": "prieš {count} val.",
-        "days_ago": "prieš {count} d."
+        "just_now": "Ką tik",
+        "minutes_ago": "Prieš {count} min.",
+        "hours_ago": "Prieš {count} val.",
+        "days_ago": "Prieš {count} d."
     },
     "errors": {
         "entity_required": "Reikia nurodyti lawn_mower entity",

@@ -1,11 +1,11 @@
-import js from "@eslint/js";
-import stylistic from "@stylistic/eslint-plugin";
-import eslintConfigPrettier from "eslint-config-prettier";
-import tseslint from "typescript-eslint";
+import js from '@eslint/js';
+import stylistic from '@stylistic/eslint-plugin';
+import eslintConfigPrettier from 'eslint-config-prettier';
+import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
     {
-        ignores: ["dist/**", "node_modules/**", "coverage/**", "eslint.config.js"],
+        ignores: ['dist/**', 'node_modules/**', 'coverage/**', 'eslint.config.js'],
     },
 
     js.configs.recommended,
@@ -22,14 +22,14 @@ export default tseslint.config(
         },
 
         plugins: {
-            "@stylistic": stylistic,
+            '@stylistic': stylistic,
         },
 
         rules: {
-            "@typescript-eslint/no-confusing-void-expression": "off",
+            '@typescript-eslint/no-confusing-void-expression': 'off',
 
-            "@typescript-eslint/no-misused-promises": [
-                "error",
+            '@typescript-eslint/no-misused-promises': [
+                'error',
                 {
                     checksVoidReturn: {
                         attributes: false,
@@ -37,61 +37,61 @@ export default tseslint.config(
                 },
             ],
 
-            "@typescript-eslint/consistent-type-imports": [
-                "error",
+            '@typescript-eslint/consistent-type-imports': [
+                'error',
                 {
-                    prefer: "type-imports",
-                    fixStyle: "separate-type-imports",
+                    prefer: 'type-imports',
+                    fixStyle: 'separate-type-imports',
                 },
             ],
 
-            "@typescript-eslint/consistent-type-definitions": ["error", "interface"],
+            '@typescript-eslint/consistent-type-definitions': ['error', 'interface'],
 
-            "@typescript-eslint/explicit-member-accessibility": [
-                "error",
+            '@typescript-eslint/explicit-member-accessibility': [
+                'error',
                 {
-                    accessibility: "explicit",
+                    accessibility: 'explicit',
                     overrides: {
-                        constructors: "no-public",
+                        constructors: 'no-public',
                     },
                 },
             ],
 
-            "@typescript-eslint/no-floating-promises": "error",
-            "@typescript-eslint/prefer-optional-chain": "error",
-            "@typescript-eslint/prefer-nullish-coalescing": "error",
+            '@typescript-eslint/no-floating-promises': 'error',
+            '@typescript-eslint/prefer-optional-chain': 'error',
+            '@typescript-eslint/prefer-nullish-coalescing': 'error',
 
-            "@stylistic/padding-line-between-statements": [
-                "error",
+            '@stylistic/padding-line-between-statements': [
+                'error',
 
                 {
-                    blankLine: "always",
-                    prev: "*",
-                    next: "return",
+                    blankLine: 'always',
+                    prev: '*',
+                    next: 'return',
                 },
 
                 {
-                    blankLine: "always",
-                    prev: ["const", "let", "var"],
-                    next: "*",
+                    blankLine: 'always',
+                    prev: ['const', 'let', 'var'],
+                    next: '*',
                 },
 
                 {
-                    blankLine: "any",
-                    prev: ["const", "let", "var"],
-                    next: ["const", "let", "var"],
+                    blankLine: 'any',
+                    prev: ['const', 'let', 'var'],
+                    next: ['const', 'let', 'var'],
                 },
 
                 {
-                    blankLine: "always",
-                    prev: "*",
-                    next: ["if", "for", "while", "switch", "try"],
+                    blankLine: 'always',
+                    prev: '*',
+                    next: ['if', 'for', 'while', 'switch', 'try'],
                 },
             ],
 
-            "@stylistic/lines-between-class-members": [
-                "error",
-                "always",
+            '@stylistic/lines-between-class-members': [
+                'error',
+                'always',
                 {
                     exceptAfterSingleLine: true,
                 },

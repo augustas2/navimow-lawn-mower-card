@@ -1,4 +1,4 @@
-import { css } from "lit";
+import { css } from 'lit';
 
 export const cardStyles = css`
     :host {
@@ -66,14 +66,11 @@ export const cardStyles = css`
         font-weight: var(--ha-font-weight-medium, 500);
         line-height: var(--ha-line-height-normal);
         letter-spacing: 0.1px;
-        cursor: pointer;
-        user-select: none;
-        -webkit-tap-highlight-color: transparent;
     }
 
     .svg-wrap {
-        width: min(220px, 32vw);
-        height: min(220px, 32vw);
+        width: clamp(220px, 32vw, 220px);
+        height: clamp(220px, 32vw, 220px);
         margin-top: var(--ha-space-4);
         margin-bottom: var(--ha-space-3);
         display: flex;
