@@ -1,0 +1,32 @@
+{
+    "common": {
+        "entity": "Robot lawn mower",
+        "name": "Name",
+        "color": "Accent color"
+    },
+    "config": {
+        "show_battery": "Show battery",
+        "show_last_changed": "Show last changed",
+        "show_controls": "Show controls",
+        "show_name": "Show name",
+        "color_description": "Accent color, e.g. var(--primary-color)"
+    },
+    "actions": {
+        "start_mowing": "Start",
+        "pause": "Pause",
+        "dock": "Return to dock"
+    },
+    "card": {
+        "battery": "Battery",
+        "open_more_info": "Open {name}",
+        "entity_not_found": "Entity not found",
+        "just_now": "just now",
+        "minutes_ago": "{count} min. ago",
+        "hours_ago": "{count} hr. ago",
+        "days_ago": "{count} d. ago"
+    },
+    "errors": {
+        "entity_required": "A lawn_mower entity is required",
+        "invalid_entity": "This card only supports lawn_mower.* entities"
+    }
+}
