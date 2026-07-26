@@ -31,7 +31,7 @@ export interface NavimowCardConfig extends LovelaceCardConfig {
     color?: string;
 }
 
-export interface CustomCardEntry {
+interface CustomCardEntry {
     type: string;
     name: string;
     preview?: boolean;

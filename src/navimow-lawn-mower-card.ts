@@ -16,7 +16,6 @@ import {
 } from './constants';
 import type {
     CardAction,
-    CustomCardEntry,
     HassEntity,
     NavimowCardConfig,
     VisualState,
@@ -339,8 +338,7 @@ window.customCards.push({
     preview: true,
     description:
         'Lawn mower card with battery, translated state, SVG animation and controls.',
-    documentationURL:
-        'https://developers.home-assistant.io/docs/frontend/custom-ui/custom-card/',
+    documentationURL: 'https://github.com/augustas2/navimow-lawn-mower-card',
     getEntitySuggestion: (_hass: HomeAssistant, entityId: string) => {
         if (!entityId.startsWith('lawn_mower.')) return null;
 
@@ -356,9 +354,5 @@ window.customCards.push({
 declare global {
     interface HTMLElementTagNameMap {
         [CARD_TYPE]: NavimowLawnMowerCard;
-    }
-
-    interface Window {
-        customCards?: CustomCardEntry[];
     }
 }

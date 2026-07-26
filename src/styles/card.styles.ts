@@ -66,8 +66,8 @@ export const cardStyles = css`
     }
 
     .svg-wrap {
-        width: clamp(220px, 32vw, 220px);
-        height: clamp(220px, 32vw, 220px);
+        width: 220px;
+        aspect-ratio: 1;
         margin-top: var(--ha-space-4);
         margin-bottom: var(--ha-space-3);
         display: flex;
@@ -84,9 +84,9 @@ export const cardStyles = css`
 
     .name {
         margin-bottom: var(--ha-space-3);
-        font-size: var(--ha-font-size-m);
+        font-size: var(--ha-font-size-l);
         line-height: 1.2;
-        font-weight: var(--ha-font-weight-bold);
+        font-weight: var(--ha-font-weight-medium);
         color: var(--mower-text-color);
     }
 
