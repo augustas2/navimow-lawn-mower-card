@@ -23,7 +23,7 @@ jobs:
 
             - name: Read package version
               id: package
-              run: echo "tag=v$(node -p 'require(\"./package.json\").version')" >> "$GITHUB_OUTPUT"
+              run: echo "tag=v$(node -p 'require("./package.json").version')" >> "$GITHUB_OUTPUT"
 
             - name: Check whether the release tag exists
               id: tag
