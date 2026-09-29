@@ -4,7 +4,7 @@
 
 A Home Assistant dashboard card for `lawn_mower.*` entities, designed for Navimow robotic lawn mowers. It shows the current mower state, battery level, update time, product image, and state-aware controls.
 
-![Navimow Lawn Mower Card](https://raw.githubusercontent.com/augustas2/navimow-lawn-mower-card/new-design/src/assets/card.png)
+![Navimow Lawn Mower Card](https://raw.githubusercontent.com/augustas2/navimow-lawn-mower-card/main/src/assets/card.png)
 
 ## Features
 
