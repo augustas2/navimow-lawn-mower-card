@@ -373,9 +373,7 @@ export class NavimowLawnMowerCard extends LitElement {
                         ? html`<div class="paused-indicator" aria-hidden="true">
                               <ha-icon icon="mdi:pause"></ha-icon>
                           </div>`
-                        : html`<div class="paused-indicator" aria-hidden="true">
-                              <ha-icon icon="mdi:pause"></ha-icon>
-                          </div>`
+                        : nothing
                 }
             </div>
         `;
