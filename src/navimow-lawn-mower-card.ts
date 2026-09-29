@@ -262,7 +262,11 @@ export class NavimowLawnMowerCard extends LitElement {
                                 : html`<span></span>`
                         }
                     </div>
-                    <div class="state-text">${stateText}</div>
+                    <div
+                        class="state-text ${visualState === 'error' ? 'state-text--error' : ''}"
+                    >
+                        ${stateText}
+                    </div>
                     ${
                         this.config?.show_last_changed !== false && lastChanged
                             ? html`<div class="updated">${lastChanged}</div>`

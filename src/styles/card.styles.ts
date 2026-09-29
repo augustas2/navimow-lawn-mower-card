@@ -51,6 +51,10 @@ export const cardStyles = css`
         line-height: var(--ha-line-height-condensed);
     }
 
+    .state-text--error {
+        color: var(--error-color, #db4437);
+    }
+
     .updated {
         margin-top: var(--ha-space-1);
         font-style: normal;
