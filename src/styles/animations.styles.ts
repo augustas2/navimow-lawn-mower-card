@@ -21,15 +21,6 @@ export const animationStyles = css`
         animation: pause-glow 2.2s ease-in-out infinite;
     }
 
-    .error::before {
-        background: var(--error-color, #db4437);
-        animation: error-glow 1.4s ease-in-out infinite;
-    }
-
-    .error .mower-image {
-        filter: drop-shadow(0 14px 12px rgb(219 68 55 / 35%));
-    }
-
     @keyframes mower-drive {
         0%,
         100% {
@@ -58,30 +49,17 @@ export const animationStyles = css`
         }
     }
 
-    @keyframes error-glow {
-        0%,
-        100% {
-            opacity: 0.12;
-            transform: scale(0.9);
-        }
-
-        50% {
-            opacity: 0.4;
-            transform: scale(1);
-        }
-    }
-
     @keyframes pause-glow {
         0%,
         100% {
             box-shadow: 0 0 0 7px
-                color-mix(in srgb, var(--state-inactive-color, #6f7287) 32%, transparent);
+                color-mix(in srgb, var(--state-indicator-color) 32%, transparent);
             transform: scale(0.96);
         }
 
         50% {
             box-shadow: 0 0 0 12px
-                color-mix(in srgb, var(--state-inactive-color, #6f7287) 72%, transparent);
+                color-mix(in srgb, var(--state-indicator-color) 72%, transparent);
             transform: scale(1);
         }
     }

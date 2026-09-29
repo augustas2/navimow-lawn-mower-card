@@ -88,23 +88,28 @@ export const cardStyles = css`
     }
 
     .paused-indicator {
+        --state-indicator-color: var(--state-inactive-color, #6f7287);
+
         position: absolute;
         display: grid;
         place-items: center;
         width: 58px;
         aspect-ratio: 1;
-        border: 2px solid
-            color-mix(in srgb, var(--state-inactive-color, #6f7287) 70%, white);
+        border: 2px solid color-mix(in srgb, var(--state-indicator-color) 70%, white);
         border-radius: 50%;
         background: color-mix(
             in srgb,
-            var(--card-background-color, #fff) 100%,
+            var(--card-background-color, #fff) 98%,
             transparent
         );
-        color: var(--secondary-text-color, #6f7287);
+        color: var(--state-indicator-color);
         box-shadow: 0 0 0 7px
-            color-mix(in srgb, var(--state-inactive-color, #6f7287) 14%, transparent);
+            color-mix(in srgb, var(--state-indicator-color) 14%, transparent);
         backdrop-filter: blur(3px);
+    }
+
+    .error-indicator {
+        --state-indicator-color: var(--error-color, #db4437);
     }
 
     .paused-indicator ha-icon {
