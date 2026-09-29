@@ -371,8 +371,8 @@ export class NavimowLawnMowerCard extends LitElement {
                 ${
                     visualState === 'paused' || visualState === 'error'
                         ? html`<div
-                              class="paused-indicator ${
-                                  visualState === 'error' ? 'error-indicator' : ''
+                              class="state-indicator ${
+                                  visualState === 'error' ? 'state-indicator--error' : ''
                               }"
                               aria-hidden="true"
                           >

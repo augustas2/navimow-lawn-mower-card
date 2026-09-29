@@ -17,8 +17,8 @@ export const animationStyles = css`
         opacity: 0.52;
     }
 
-    .paused-indicator {
-        animation: pause-glow 2.2s ease-in-out infinite;
+    .state-indicator {
+        animation: state-indicator-pulse 2.2s ease-in-out infinite;
     }
 
     @keyframes mower-drive {
@@ -49,7 +49,7 @@ export const animationStyles = css`
         }
     }
 
-    @keyframes pause-glow {
+    @keyframes state-indicator-pulse {
         0%,
         100% {
             box-shadow: 0 0 0 7px
@@ -67,7 +67,7 @@ export const animationStyles = css`
     @media (prefers-reduced-motion: reduce) {
         .mower-image,
         .mower-image-wrap::before,
-        .paused-indicator {
+        .state-indicator {
             animation: none;
         }
     }

@@ -87,7 +87,7 @@ export const cardStyles = css`
         filter: drop-shadow(0 14px 12px rgb(0 0 0 / 18%));
     }
 
-    .paused-indicator {
+    .state-indicator {
         --state-indicator-color: var(--state-inactive-color, #6f7287);
 
         position: absolute;
@@ -108,11 +108,11 @@ export const cardStyles = css`
         backdrop-filter: blur(3px);
     }
 
-    .error-indicator {
+    .state-indicator--error {
         --state-indicator-color: var(--error-color, #db4437);
     }
 
-    .paused-indicator ha-icon {
+    .state-indicator ha-icon {
         --mdc-icon-size: 30px;
     }
 
