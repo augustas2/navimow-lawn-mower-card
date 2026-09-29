@@ -1,7 +1,7 @@
 {
     "name": "navimow-lawn-mower-card",
-    "version": "0.1.0",
-    "description": "Home Assistant Lovelace card for lawn_mower entities with an animated mower SVG and controls.",
+    "version": "1.0.0",
+    "description": "Home Assistant Lovelace custom card for Navimow lawn mower entities.",
     "type": "module",
     "main": "dist/navimow-lawn-mower-card.js",
     "module": "dist/navimow-lawn-mower-card.js",
