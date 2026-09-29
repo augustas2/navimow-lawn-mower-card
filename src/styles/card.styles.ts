@@ -62,9 +62,6 @@ export const cardStyles = css`
 
     .mower-image-wrap {
         width: min(100%, 300px);
-        aspect-ratio: 1.15;
-        margin-top: var(--ha-space-4);
-        margin-bottom: var(--ha-space-3);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -88,6 +85,30 @@ export const cardStyles = css`
         height: 100%;
         object-fit: contain;
         filter: drop-shadow(0 14px 12px rgb(0 0 0 / 18%));
+    }
+
+    .paused-indicator {
+        position: absolute;
+        display: grid;
+        place-items: center;
+        width: 58px;
+        aspect-ratio: 1;
+        border: 2px solid
+            color-mix(in srgb, var(--state-inactive-color, #6f7287) 70%, white);
+        border-radius: 50%;
+        background: color-mix(
+            in srgb,
+            var(--card-background-color, #fff) 100%,
+            transparent
+        );
+        color: var(--secondary-text-color, #6f7287);
+        box-shadow: 0 0 0 7px
+            color-mix(in srgb, var(--state-inactive-color, #6f7287) 14%, transparent);
+        backdrop-filter: blur(3px);
+    }
+
+    .paused-indicator ha-icon {
+        --mdc-icon-size: 30px;
     }
 
     .name {

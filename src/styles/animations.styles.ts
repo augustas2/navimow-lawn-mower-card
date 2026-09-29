@@ -14,7 +14,11 @@ export const animationStyles = css`
     }
 
     .paused .mower-image {
-        opacity: 0.72;
+        opacity: 0.52;
+    }
+
+    .paused-indicator {
+        animation: pause-glow 2.2s ease-in-out infinite;
     }
 
     .error::before {
@@ -67,9 +71,25 @@ export const animationStyles = css`
         }
     }
 
+    @keyframes pause-glow {
+        0%,
+        100% {
+            box-shadow: 0 0 0 7px
+                color-mix(in srgb, var(--state-inactive-color, #6f7287) 32%, transparent);
+            transform: scale(0.96);
+        }
+
+        50% {
+            box-shadow: 0 0 0 12px
+                color-mix(in srgb, var(--state-inactive-color, #6f7287) 72%, transparent);
+            transform: scale(1);
+        }
+    }
+
     @media (prefers-reduced-motion: reduce) {
         .mower-image,
-        .mower-image-wrap::before {
+        .mower-image-wrap::before,
+        .paused-indicator {
             animation: none;
         }
     }

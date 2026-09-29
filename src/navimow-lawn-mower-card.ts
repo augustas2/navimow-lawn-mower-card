@@ -368,6 +368,15 @@ export class NavimowLawnMowerCard extends LitElement {
                     src=${mowerImage}
                     alt=${localize('card.mower_image', this.hass?.language)}
                 />
+                ${
+                    visualState === 'paused'
+                        ? html`<div class="paused-indicator" aria-hidden="true">
+                              <ha-icon icon="mdi:pause"></ha-icon>
+                          </div>`
+                        : html`<div class="paused-indicator" aria-hidden="true">
+                              <ha-icon icon="mdi:pause"></ha-icon>
+                          </div>`
+                }
             </div>
         `;
     }
