@@ -1,4 +1,11 @@
-import { html, LitElement, nothing, type CSSResultGroup, type TemplateResult } from 'lit';
+import {
+    html,
+    LitElement,
+    nothing,
+    type CSSResultGroup,
+    type PropertyValues,
+    type TemplateResult,
+} from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { styleMap } from 'lit/directives/style-map.js';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
@@ -14,18 +21,19 @@ import {
     visualStateColors,
     RAW_STATE_MAP,
 } from './constants';
-import type {
-    CardAction,
-    HassEntity,
-    NavimowCardConfig,
-    VisualState,
-} from './types';
+import type { CardAction, HassEntity, NavimowCardConfig, VisualState } from './types';
 
 const disabledByAction: Record<CardAction, (visualState: VisualState) => boolean> = {
     start_mowing: (visualState) =>
         visualState === 'mowing' || visualState === 'returning',
     pause: (visualState) => visualState !== 'mowing' && visualState !== 'returning',
     dock: (visualState) => visualState === 'docked' || visualState === 'returning',
+};
+
+const actionFeatures: Record<CardAction, LawnMowerFeature> = {
+    start_mowing: LawnMowerFeature.StartMowing,
+    pause: LawnMowerFeature.Pause,
+    dock: LawnMowerFeature.Dock,
 };
 
 const computeVisualState = (stateObj: HassEntity | undefined): VisualState => {
@@ -130,6 +138,10 @@ export class NavimowLawnMowerCard extends LitElement {
     @property({ attribute: false }) public hass?: HomeAssistant;
 
     @state() private config?: NavimowCardConfig;
+
+    @state() private isCallingService = false;
+
+    private pendingEntityState: string | undefined;
 
     private static readonly DEFAULT_CONFIG = {
         show_battery: true,
@@ -302,7 +314,7 @@ export class NavimowLawnMowerCard extends LitElement {
                         type="button"
                         title=${label}
                         aria-label=${label}
-                        ?disabled=${actionDisabled(action, visualState)}
+                        ?disabled=${this.isCallingService || actionDisabled(action, visualState)}
                         @click=${(event: Event) => {
                             void this.callLawnMowerService(event, action, entityId);
                         }}
@@ -320,8 +332,42 @@ export class NavimowLawnMowerCard extends LitElement {
     ): Promise<void> {
         event.stopPropagation();
 
-        if (!this.hass) return;
-        await this.hass.callService('lawn_mower', action, { entity_id: entityId });
+        const hass = this.hass;
+
+        if (!hass || !this.canCallLawnMowerService(action, entityId)) return;
+
+        this.pendingEntityState = hass.states[entityId]?.state;
+        this.isCallingService = true;
+
+        try {
+            await hass.callService('lawn_mower', action, { entity_id: entityId });
+        } catch (error) {
+            this.isCallingService = false;
+            this.pendingEntityState = undefined;
+            throw error;
+        }
+    }
+
+    private canCallLawnMowerService(action: CardAction, entityId: string): boolean {
+        if (!this.hass || this.isCallingService) return false;
+
+        const stateObj = this.hass.states[entityId];
+
+        return (
+            hasFeature(stateObj, actionFeatures[action]) &&
+            !actionDisabled(action, computeVisualState(stateObj))
+        );
+    }
+
+    protected override updated(changedProperties: PropertyValues<this>): void {
+        if (!changedProperties.has('hass') || !this.isCallingService) return;
+
+        const currentState = this.hass?.states[this.config?.entity ?? '']?.state;
+
+        if (currentState !== this.pendingEntityState) {
+            this.isCallingService = false;
+            this.pendingEntityState = undefined;
+        }
     }
 
     private renderMowerSvg(visualState: VisualState): TemplateResult {
@@ -337,7 +383,7 @@ window.customCards.push({
     name: 'Navimow Lawn Mower Card',
     preview: true,
     description:
-        'Lawn mower card with battery, translated state, SVG animation and controls.',
+        'Navimow lawn mower card with battery, translated state, SVG animation and controls.',
     documentationURL: 'https://github.com/augustas2/navimow-lawn-mower-card',
     getEntitySuggestion: (_hass: HomeAssistant, entityId: string) => {
         if (!entityId.startsWith('lawn_mower.')) return null;

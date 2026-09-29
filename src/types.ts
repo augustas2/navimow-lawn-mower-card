@@ -50,7 +50,6 @@ export type VisualState = 'mowing' | 'docked' | 'returning' | 'paused' | 'error'
 
 export type CardAction = 'start_mowing' | 'pause' | 'dock';
 
-
 declare global {
     interface Window {
         customCards?: CustomCardEntry[];

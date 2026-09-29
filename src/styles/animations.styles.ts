@@ -8,24 +8,16 @@ export const animationStyles = css`
         transform-origin: center;
     }
 
-    .mowing .mower-assembly {
+    :is(.mowing, .returning) .mower-assembly {
         animation: mower-drive 1.4s ease-in-out infinite;
     }
 
-    .mowing .lidar-ring {
+    :is(.mowing, .returning) .lidar-ring {
         animation: lidar-pulse 1.6s ease-in-out infinite;
     }
 
     .mowing .wheel-tread {
         animation: wheel-tread-up 2.5s linear infinite;
-    }
-
-    .returning .mower-assembly {
-        animation: mower-drive 1.4s ease-in-out infinite;
-    }
-
-    .returning .lidar-ring {
-        animation: lidar-pulse 1.6s ease-in-out infinite;
     }
 
     .returning .wheel-tread {

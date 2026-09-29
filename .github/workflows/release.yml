@@ -1,0 +1,51 @@
+name: Release
+
+on:
+    push:
+        branches: [main]
+
+permissions:
+    contents: write
+
+jobs:
+    release:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v5
+
+            - uses: actions/setup-node@v5
+              with:
+                  node-version: 24
+                  cache: npm
+
+            - run: npm ci
+            - run: npm run check
+            - run: npm run build
+
+            - name: Read package version
+              id: package
+              run: echo "tag=v$(node -p 'require(\"./package.json\").version')" >> "$GITHUB_OUTPUT"
+
+            - name: Check whether the release tag exists
+              id: tag
+              run: |
+                  if git ls-remote --exit-code --tags origin "refs/tags/${{ steps.package.outputs.tag }}"; then
+                      echo "exists=true" >> "$GITHUB_OUTPUT"
+                  else
+                      echo "exists=false" >> "$GITHUB_OUTPUT"
+                  fi
+
+            - name: Create GitHub release
+              if: steps.tag.outputs.exists == 'false'
+              env:
+                  GH_TOKEN: ${{ github.token }}
+              run: >
+                  gh release create "${{ steps.package.outputs.tag }}"
+                  dist/navimow-lawn-mower-card.js
+                  --target "$GITHUB_SHA"
+                  --generate-notes
+
+            - name: Validate HACS repository
+              uses: hacs/action@main
+              with:
+                  category: plugin
