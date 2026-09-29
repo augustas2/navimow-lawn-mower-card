@@ -7,18 +7,15 @@ import {
     type TemplateResult,
 } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { styleMap } from 'lit/directives/style-map.js';
-import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import type { HomeAssistant } from 'custom-card-helpers';
 import { getCurrentDocumentLanguage, localize } from './translations/localize';
-import mowerSvg from './assets/navimow.svg?raw';
+import mowerImage from './assets/210_lidar_pro.png';
 import { animationStyles, cardStyles } from './styles';
 import {
     ACTION_ICONS_MAP,
     CARD_TYPE,
     ENTITY_STATE_MAP,
     LawnMowerFeature,
-    visualStateColors,
     RAW_STATE_MAP,
 } from './constants';
 import type { CardAction, HassEntity, NavimowCardConfig, VisualState } from './types';
@@ -205,7 +202,6 @@ export class NavimowLawnMowerCard extends LitElement {
                 { name: 'show_last_changed', selector: { boolean: {} } },
                 { name: 'show_controls', selector: { boolean: {} } },
                 { name: 'show_name', selector: { boolean: {} } },
-                { name: 'color', selector: { text: {} } },
             ],
             computeLabel: (schema: { name: string }): string => {
                 const translationKeys: Record<string, string> = {
@@ -215,7 +211,6 @@ export class NavimowLawnMowerCard extends LitElement {
                     show_last_changed: 'config.show_last_changed',
                     show_controls: 'config.show_controls',
                     show_name: 'config.show_name',
-                    color: 'config.color_description',
                 };
 
                 const translationKey = translationKeys[schema.name];
@@ -243,10 +238,9 @@ export class NavimowLawnMowerCard extends LitElement {
             stateObj?.last_changed,
             this.hass?.language,
         );
-        const color = this.config?.color ?? this.computeStateColor(visualState);
 
         return html`
-            <ha-card style=${styleMap({ '--mower-color': color })}>
+            <ha-card>
                 <button
                     class="content"
                     type="button"
@@ -274,7 +268,7 @@ export class NavimowLawnMowerCard extends LitElement {
                             ? html`<div class="updated">${lastChanged}</div>`
                             : nothing
                     }
-                    ${this.renderMowerSvg(visualState)}
+                    ${this.renderMowerImage(visualState)}
                     ${this.config?.show_name !== false ? html`<div class="name">${name}</div>` : nothing}
                 </button>
                 ${
@@ -286,10 +280,6 @@ export class NavimowLawnMowerCard extends LitElement {
                 }
             </ha-card>
         `;
-    }
-
-    private computeStateColor(visualState: VisualState): string {
-        return visualStateColors[visualState];
     }
 
     private renderActions(
@@ -370,8 +360,16 @@ export class NavimowLawnMowerCard extends LitElement {
         }
     }
 
-    private renderMowerSvg(visualState: VisualState): TemplateResult {
-        return html` <div class="svg-wrap ${visualState}">${unsafeSVG(mowerSvg)}</div> `;
+    private renderMowerImage(visualState: VisualState): TemplateResult {
+        return html`
+            <div class="mower-image-wrap ${visualState}">
+                <img
+                    class="mower-image"
+                    src=${mowerImage}
+                    alt=${localize('card.mower_image', this.hass?.language)}
+                />
+            </div>
+        `;
     }
 
     public static override styles: CSSResultGroup = [cardStyles, animationStyles];

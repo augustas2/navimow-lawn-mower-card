@@ -110,15 +110,14 @@ name: Navimow i210 LiDAR
 
 ## Optional config
 
-| Option              | Type    | Default              | Description                                                  |
-| ------------------- | ------- | -------------------- | ------------------------------------------------------------ |
-| `entity`            | string  | required             | Must be a `lawn_mower.*` entity.                             |
-| `name`              | string  | entity friendly name | Card name under SVG.                                         |
-| `show_battery`      | boolean | `true`               | Shows battery in top-left corner.                            |
-| `show_last_changed` | boolean | `true`               | Shows relative last changed time.                            |
-| `show_controls`     | boolean | `true`               | Shows start/pause/dock buttons.                              |
-| `show_name`         | boolean | `true`               | Shows friendly name under SVG.                               |
-| `color`             | string  | state-based          | CSS color or HA theme variable, e.g. `var(--primary-color)`. |
+| Option              | Type    | Default              | Description                       |
+| ------------------- | ------- | -------------------- | --------------------------------- |
+| `entity`            | string  | required             | Must be a `lawn_mower.*` entity.  |
+| `name`              | string  | entity friendly name | Card name under SVG.              |
+| `show_battery`      | boolean | `true`               | Shows battery in top-left corner. |
+| `show_last_changed` | boolean | `true`               | Shows relative last changed time. |
+| `show_controls`     | boolean | `true`               | Shows start/pause/dock buttons.   |
+| `show_name`         | boolean | `true`               | Shows friendly name under SVG.    |
 
 ## Services used
 
