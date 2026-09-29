@@ -1,131 +1,80 @@
 # Navimow Lawn Mower Card
 
-Home Assistant Lovelace custom card for `lawn_mower.*` entities. It is built with **Lit + TypeScript + Vite** and reuses the mower SVG/animation that you provided.
+[![Release](https://github.com/augustas2/navimow-lawn-mower-card/actions/workflows/release.yml/badge.svg)](https://github.com/augustas2/navimow-lawn-mower-card/actions/workflows/release.yml)
+
+A Home Assistant dashboard card for `lawn_mower.*` entities, designed for Navimow robotic lawn mowers. It shows the current mower state, battery level, update time, product image, and state-aware controls.
+
+![Navimow Lawn Mower Card](https://raw.githubusercontent.com/augustas2/navimow-lawn-mower-card/main/src/assets/card.png)
 
 ## Features
 
-- Big state text, similar to the screenshot: `Stovi prie stotelės`, `Pjauna veją`, `Grįžta į stotelę`, etc.
-- Battery level in the top-left corner.
-- Animated mower SVG below the state text.
-- Friendly name and raw metric/status line.
-- Start, pause, and dock buttons based on the entity `supported_features` bit mask.
-- Home Assistant visual editor support through `getConfigForm()`.
-- Home Assistant 2026.6+ entity suggestion support through `window.customCards.getEntitySuggestion()`.
-- `prefers-reduced-motion` support.
+- Localized English and Lithuanian interface
+- Navimow product image with subtle state-specific visual feedback
+- Battery level and relative last-updated time
+- Optional mower name, battery, update time, and controls
+- Start, pause, and dock controls based on the entity `supported_features` bit mask
+- Duplicate-command protection while Home Assistant processes a mower action
+- Visual editor and lawn-mower entity suggestion support
+- `prefers-reduced-motion` support
 
-## Project structure
+## Installation
 
-```text
-navimow-lawn-mower-card/
-├─ src/
-│  ├─ navimow-lawn-mower-card.ts
-│  └─ types.ts
-├─ package.json
-├─ tsconfig.json
-├─ vite.config.ts
-├─ eslint.config.js
-├─ .prettierrc.json
-├─ .gitignore
-├─ hacs.json
-└─ README.md
-```
+### HACS
 
-## Development in IntelliJ IDEA
+1. In HACS, open **Dashboard** and choose **Download repositories**.
+2. Search for **Navimow Lawn Mower Card**. Until it is included in the default HACS repository, add `augustas2/navimow-lawn-mower-card` as a custom repository with the **Dashboard** category.
+3. Download the card.
+4. Add the dashboard resource if HACS does not add it automatically:
 
-1. Open the `navimow-lawn-mower-card` folder in IntelliJ IDEA.
-2. Use Node.js 20+.
-3. Install dependencies:
+    ```yaml
+    url: /hacsfiles/navimow-lawn-mower-card/navimow-lawn-mower-card.js
+    type: module
+    ```
 
-```bash
-npm install
-```
+### Manual installation
 
-4. Run checks:
+1. Download `navimow-lawn-mower-card.js` from the latest release.
+2. Copy it to `/config/www/navimow-lawn-mower-card.js`.
+3. Add the dashboard resource:
 
-```bash
-npm run typecheck
-npm run lint
-npm run format:check
-npm run check
-```
+    ```yaml
+    url: /local/navimow-lawn-mower-card.js
+    type: module
+    ```
 
-5. Start dev server:
+Refresh the browser after installing or updating the resource.
 
-```bash
-npm run dev
-```
-
-6. Build production file:
-
-```bash
-npm run build
-```
-
-The build output will be:
-
-```text
-dist/navimow-lawn-mower-card.js
-```
-
-## Install in Home Assistant
-
-Copy this file:
-
-```text
-dist/navimow-lawn-mower-card.js
-```
-
-to:
-
-```text
-/config/www/navimow-lawn-mower-card.js
-```
-
-Then add a dashboard resource:
-
-```yaml
-url: /local/navimow-lawn-mower-card.js
-type: module
-```
-
-## Lovelace YAML example
+## Configuration
 
 ```yaml
 type: custom:navimow-lawn-mower-card
 entity: lawn_mower.navimow_i210_lidar
-name: Roborock Qrevo Edge Series
+name: Navimow i210 LiDAR
 show_battery: true
 show_last_changed: true
 show_controls: true
 show_name: true
 ```
 
-For your mower, use:
+| Option              | Required | Description                                                             |
+| ------------------- | -------- | ----------------------------------------------------------------------- |
+| `entity`            | Yes      | A `lawn_mower.*` entity.                                                |
+| `name`              | No       | Name shown below the mower image. Defaults to the entity friendly name. |
+| `show_battery`      | No       | Shows the battery level. Defaults to `true`.                            |
+| `show_last_changed` | No       | Shows the relative last-changed time. Defaults to `true`.               |
+| `show_controls`     | No       | Shows mower control buttons. Defaults to `true`.                        |
+| `show_name`         | No       | Shows the mower name. Defaults to `true`.                               |
 
-```yaml
-type: custom:navimow-lawn-mower-card
-entity: lawn_mower.navimow_i210_lidar
-name: Navimow i210 LiDAR
-```
+## Controls and states
 
-## Optional config
+The card uses the standard Home Assistant lawn-mower services:
 
-| Option              | Type    | Default              | Description                                                  |
-| ------------------- | ------- | -------------------- | ------------------------------------------------------------ |
-| `entity`            | string  | required             | Must be a `lawn_mower.*` entity.                             |
-| `name`              | string  | entity friendly name | Card name under SVG.                                         |
-| `show_battery`      | boolean | `true`               | Shows battery in top-left corner.                            |
-| `show_last_changed` | boolean | `true`               | Shows relative last changed time.                            |
-| `show_controls`     | boolean | `true`               | Shows start/pause/dock buttons.                              |
-| `show_name`         | boolean | `true`               | Shows friendly name under SVG.                               |
-| `color`             | string  | state-based          | CSS color or HA theme variable, e.g. `var(--primary-color)`. |
+| Action | Service                   | Availability                                                           |
+| ------ | ------------------------- | ---------------------------------------------------------------------- |
+| Start  | `lawn_mower.start_mowing` | When the entity supports `StartMowing` and is not mowing or returning. |
+| Pause  | `lawn_mower.pause`        | When the entity supports `Pause` and is mowing or returning.           |
+| Dock   | `lawn_mower.dock`         | When the entity supports `Dock` and is not docked or returning.        |
 
-## Services used
+Controls are disabled while a command is pending, then re-enabled after Home Assistant reports an entity state change. A failed service call re-enables them immediately.
 
-The action buttons call standard Home Assistant services:
-
-- `lawn_mower.start_mowing`
-- `lawn_mower.pause`
-- `lawn_mower.dock`
-
-They are shown only when the entity reports the matching `supported_features` flag.
+Visual feedback is deliberately understated: mowing and returning have gentle motion, paused and error states show a centered state indicator, and docked is static. All animation is disabled when the user enables reduced motion.

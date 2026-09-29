@@ -28,7 +28,6 @@ export interface NavimowCardConfig extends LovelaceCardConfig {
     show_last_changed?: boolean;
     show_controls?: boolean;
     show_battery?: boolean;
-    color?: string;
 }
 
 interface CustomCardEntry {

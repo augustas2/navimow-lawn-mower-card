@@ -1,15 +1,13 @@
 {
     "common": {
         "entity": "Robot lawn mower",
-        "name": "Name",
-        "color": "Accent color"
+        "name": "Name"
     },
     "config": {
         "show_battery": "Show battery",
         "show_last_changed": "Show last changed",
         "show_controls": "Show controls",
-        "show_name": "Show name",
-        "color_description": "Accent color, e.g. var(--primary-color)"
+        "show_name": "Show name"
     },
     "actions": {
         "start_mowing": "Start",
@@ -18,6 +16,7 @@
     },
     "card": {
         "battery": "Battery",
+        "mower_image": "Navimow lawn mower",
         "open_more_info": "Open {name}",
         "entity_not_found": "Entity not found",
         "just_now": "just now",

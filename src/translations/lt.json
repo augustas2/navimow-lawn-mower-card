@@ -1,15 +1,13 @@
 {
     "common": {
         "entity": "Robotas vejapjovė",
-        "name": "Pavadinimas",
-        "color": "Akcento spalva"
+        "name": "Pavadinimas"
     },
     "config": {
         "show_battery": "Rodyti bateriją",
         "show_last_changed": "Rodyti paskutinį pokytį",
         "show_controls": "Rodyti valdymo mygtukus",
-        "show_name": "Rodyti pavadinimą",
-        "color_description": "Akcento spalva, pvz. var(--primary-color)"
+        "show_name": "Rodyti pavadinimą"
     },
     "actions": {
         "start_mowing": "Pradėti pjauti",
@@ -18,6 +16,7 @@
     },
     "card": {
         "battery": "Baterija",
+        "mower_image": "Navimow vejos robotas",
         "open_more_info": "Atidaryti {name}",
         "entity_not_found": "Entity nerastas",
         "just_now": "Ką tik",

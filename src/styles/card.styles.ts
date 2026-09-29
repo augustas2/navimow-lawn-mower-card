@@ -6,12 +6,8 @@ export const cardStyles = css`
     }
 
     ha-card {
-        --mower-text-color: var(--primary-text-color, #4f5268);
-        --mower-secondary-text-color: var(--secondary-text-color, #6b6f86);
-        --mower-icon-button-bg: color-mix(in srgb, var(--mower-color) 10%, transparent);
-
         overflow: hidden;
-        color: var(--mower-text-color);
+        color: var(--primary-text-color);
     }
 
     .content {
@@ -42,7 +38,6 @@ export const cardStyles = css`
         gap: var(--ha-space-1);
         font-size: var(--ha-font-size-m);
         font-weight: var(--ha-font-weight-medium);
-        color: var(--mower-secondary-text-color);
     }
 
     .battery ha-icon {
@@ -56,6 +51,10 @@ export const cardStyles = css`
         line-height: var(--ha-line-height-condensed);
     }
 
+    .state-text--error {
+        color: var(--error-color, #db4437);
+    }
+
     .updated {
         margin-top: var(--ha-space-1);
         font-style: normal;
@@ -65,21 +64,60 @@ export const cardStyles = css`
         letter-spacing: 0.1px;
     }
 
-    .svg-wrap {
-        width: 220px;
-        aspect-ratio: 1;
-        margin-top: var(--ha-space-4);
-        margin-bottom: var(--ha-space-3);
+    .mower-image-wrap {
+        width: min(100%, 300px);
         display: flex;
         align-items: center;
         justify-content: center;
+        position: relative;
+        isolation: isolate;
     }
 
-    .svg-wrap > svg {
+    .mower-image-wrap::before {
+        content: '';
+        position: absolute;
+        z-index: -1;
+        width: 78%;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        filter: blur(24px);
+        opacity: 0;
+    }
+
+    .mower-image {
         width: 100%;
         height: 100%;
-        overflow: visible;
-        display: block;
+        object-fit: contain;
+        filter: drop-shadow(0 14px 12px rgb(0 0 0 / 18%));
+    }
+
+    .state-indicator {
+        --state-indicator-color: var(--state-inactive-color, #6f7287);
+
+        position: absolute;
+        display: grid;
+        place-items: center;
+        width: 58px;
+        aspect-ratio: 1;
+        border: 2px solid color-mix(in srgb, var(--state-indicator-color) 70%, white);
+        border-radius: 50%;
+        background: color-mix(
+            in srgb,
+            var(--card-background-color, #fff) 98%,
+            transparent
+        );
+        color: var(--state-indicator-color);
+        box-shadow: 0 0 0 7px
+            color-mix(in srgb, var(--state-indicator-color) 14%, transparent);
+        backdrop-filter: blur(3px);
+    }
+
+    .state-indicator--error {
+        --state-indicator-color: var(--error-color, #db4437);
+    }
+
+    .state-indicator ha-icon {
+        --mdc-icon-size: 30px;
     }
 
     .name {
@@ -87,7 +125,6 @@ export const cardStyles = css`
         font-size: var(--ha-font-size-l);
         line-height: 1.2;
         font-weight: var(--ha-font-weight-medium);
-        color: var(--mower-text-color);
     }
 
     .actions {
@@ -101,9 +138,9 @@ export const cardStyles = css`
     .action-button {
         appearance: none;
         border: 0;
-        border-radius: var(--ha-border-radius-lg);
-        background: var(--mower-icon-button-bg);
-        color: var(--mower-color);
+        border-radius: var(--ha-border-radius-lg, 12px);
+        background: color-mix(in srgb, var(--primary-color) 14%, transparent);
+        color: var(--primary-color);
         width: 48px;
         height: 48px;
         display: inline-grid;
@@ -116,7 +153,7 @@ export const cardStyles = css`
     }
 
     .action-button:hover:not(:disabled) {
-        background: color-mix(in srgb, var(--mower-color) 16%, transparent);
+        background: color-mix(in srgb, var(--primary-color) 22%, transparent);
     }
 
     .action-button:disabled {
