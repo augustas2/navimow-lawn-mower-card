@@ -13,7 +13,7 @@ export const animationStyles = css`
         animation: state-glow 2.8s ease-in-out infinite;
     }
 
-    .paused .mower-image {
+    :is(.paused, .error) .mower-image {
         opacity: 0.52;
     }
 

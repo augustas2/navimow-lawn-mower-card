@@ -89,6 +89,7 @@ export const cardStyles = css`
         height: 100%;
         object-fit: contain;
         filter: drop-shadow(0 14px 12px rgb(0 0 0 / 18%));
+        transition: opacity 120ms ease-out;
     }
 
     .state-indicator {
@@ -147,7 +148,6 @@ export const cardStyles = css`
         place-items: center;
         cursor: pointer;
         transition:
-            transform 120ms ease,
             opacity 120ms ease,
             background-color 120ms ease;
     }
