@@ -149,12 +149,23 @@ export const cardStyles = css`
         place-items: center;
         cursor: pointer;
         transition:
+            transform 80ms ease,
             opacity 120ms ease,
             background-color 120ms ease;
     }
 
     .action-button:hover:not(:disabled) {
         background: color-mix(in srgb, var(--primary-color, #009ac7) 22%, transparent);
+    }
+
+    .action-button:active:not(:disabled) {
+        background: color-mix(in srgb, var(--primary-color, #009ac7) 36%, transparent);
+        transform: scale(0.94);
+    }
+
+    .action-button:focus-visible {
+        outline: 2px solid var(--primary-color, #009ac7);
+        outline-offset: 2px;
     }
 
     .action-button:disabled {

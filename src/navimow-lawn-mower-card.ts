@@ -56,20 +56,34 @@ const hasFeature = (
     feature: LawnMowerFeature,
 ): boolean => (supportedFeatures(stateObj) & feature) !== 0;
 
-const batteryIcon = (battery: number): string => {
-    if (battery <= 5) return 'mdi:battery-outline';
+const batteryIcon = (battery: number, isCharging: boolean): string => {
+    if (battery <= 5) {
+        return isCharging ? 'mdi:battery-charging-outline' : 'mdi:battery-outline';
+    }
 
-    if (battery >= 95) return 'mdi:battery';
+    const level = Math.round(battery / 10) * 10;
 
-    const level = Math.ceil(battery / 10) * 10;
+    if (level === 100) {
+        return isCharging ? 'mdi:battery-charging' : 'mdi:battery';
+    }
 
-    return `mdi:battery-${String(level)}`;
+    return `mdi:battery${isCharging ? '-charging' : ''}-${String(level)}`;
+};
+
+const numericValue = (value: unknown): number | undefined => {
+    if (typeof value !== 'number' && typeof value !== 'string') return undefined;
+
+    const number = Number(value);
+
+    return Number.isFinite(number) ? number : undefined;
 };
 
 const batteryLevel = (stateObj: HassEntity | undefined): number | undefined => {
-    const battery = stateObj?.attributes.battery ?? stateObj?.attributes.battery_level;
+    const battery = [stateObj?.attributes.battery, stateObj?.attributes.battery_level]
+        .map(numericValue)
+        .find((value) => value !== undefined);
 
-    if (typeof battery !== 'number' || Number.isNaN(battery)) return undefined;
+    if (battery === undefined) return undefined;
 
     return Math.max(0, Math.min(100, Math.round(battery)));
 };
@@ -224,6 +238,7 @@ export class NavimowLawnMowerCard extends LitElement {
         const entityId = this.config?.entity;
         const stateObj = entityId ? this.hass?.states[entityId] : undefined;
         const visualState = computeVisualState(stateObj);
+        const isCharging = stateObj?.state === 'charging';
         const battery = batteryLevel(stateObj);
         const name = this.config?.name ?? stateObj?.attributes.friendly_name ?? entityId;
         const stateText =
@@ -256,7 +271,9 @@ export class NavimowLawnMowerCard extends LitElement {
                                       class="battery"
                                       title=${localize('card.battery', this.hass?.language)}
                                   >
-                                      <ha-icon icon=${batteryIcon(battery)}></ha-icon>
+                                      <ha-icon
+                                          icon=${batteryIcon(battery, isCharging)}
+                                      ></ha-icon>
                                       <span>${battery}%</span>
                                   </div>`
                                 : html`<span></span>`

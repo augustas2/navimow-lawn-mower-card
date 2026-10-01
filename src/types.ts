@@ -10,8 +10,8 @@ export interface HassEntity {
     last_updated: string;
     attributes: Record<string, HassEntityAttributeValue> & {
         friendly_name?: string;
-        battery?: number;
-        battery_level?: number;
+        battery?: number | string;
+        battery_level?: number | string;
         status?: string;
         supported_features?: number;
         metrics?: {
